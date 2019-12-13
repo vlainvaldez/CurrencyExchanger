@@ -7,18 +7,53 @@
 //
 
 import UIKit
+import SnapKit
 
 public class SubmitRow: UICollectionViewCell {
+    
+    // MARK: - Subviews
+    public let saveButton: UIButton = {
+        let view: UIButton = UIButton()
+        view.setTitle("Submit", for: UIControl.State.normal)
+        view.setTitleColor(
+            UIColor.white,
+            for: UIControl.State.normal
+        )
+        view.titleLabel?.font = UIFont.systemFont(
+            ofSize: 16.0,
+            weight: UIFont.Weight.semibold
+        )
+        view.accessibilityIdentifier = "saveButton_UIButton"
+        view.backgroundColor = AppUI.Color.green
+        return view
+    }()
     
     // MARK: - Initializer
     public override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.backgroundColor = UIColor.red
+        self.backgroundColor = UIColor.clear
+        
+        self.subviews(forAutoLayout: [
+            self.saveButton
+        ])
+        
+        self.saveButton.snp.remakeConstraints { (make: ConstraintMaker) -> Void in
+            make.top.equalToSuperview().offset(20.0)
+            make.leading.equalToSuperview().offset(50.0)
+            make.trailing.equalToSuperview().inset(50.0)
+            make.bottom.equalToSuperview().inset(20.0)
+        }
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        self.saveButton.setRadius(radius: 10)
     }
 }
 

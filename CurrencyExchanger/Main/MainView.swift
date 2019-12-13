@@ -28,7 +28,7 @@ public class MainView: UIView {
         view.backgroundColor = AppUI.Color.sky
         return view
     }()
-    
+
     // MARK: - Initializer
     public override init(frame: CGRect) {
         super.init(frame: frame)        

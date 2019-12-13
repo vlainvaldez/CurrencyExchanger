@@ -33,6 +33,7 @@
 		7C83C0D123A34FC7002B667A /* BalancesRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C83C0D023A34FC7002B667A /* BalancesRow.swift */; };
 		7C83C0D323A34FF6002B667A /* SubmitRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C83C0D223A34FF6002B667A /* SubmitRow.swift */; };
 		7C83C0D623A3569F002B667A /* MainRows.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C83C0D523A3569F002B667A /* MainRows.swift */; };
+		7C83C0D823A3A875002B667A /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C83C0D723A3A875002B667A /* String+Extensions.swift */; };
 		E241B53CBB0FB772EB28918D /* Pods_CurrencyExchanger_CurrencyExchangerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F772CE9CB14D409B66950369 /* Pods_CurrencyExchanger_CurrencyExchangerUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -89,6 +90,7 @@
 		7C83C0D023A34FC7002B667A /* BalancesRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalancesRow.swift; sourceTree = "<group>"; };
 		7C83C0D223A34FF6002B667A /* SubmitRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitRow.swift; sourceTree = "<group>"; };
 		7C83C0D523A3569F002B667A /* MainRows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRows.swift; sourceTree = "<group>"; };
+		7C83C0D723A3A875002B667A /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		D079DE76353E2E6759ED2DD8 /* Pods-CurrencyExchanger.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CurrencyExchanger.release.xcconfig"; path = "Target Support Files/Pods-CurrencyExchanger/Pods-CurrencyExchanger.release.xcconfig"; sourceTree = "<group>"; };
 		E4AA9E720EAA1F5BA5333224 /* Pods-CurrencyExchanger.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CurrencyExchanger.debug.xcconfig"; path = "Target Support Files/Pods-CurrencyExchanger/Pods-CurrencyExchanger.debug.xcconfig"; sourceTree = "<group>"; };
 		F377BFC939346CDB4358B957 /* Pods-CurrencyExchanger-CurrencyExchangerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CurrencyExchanger-CurrencyExchangerUITests.release.xcconfig"; path = "Target Support Files/Pods-CurrencyExchanger-CurrencyExchangerUITests/Pods-CurrencyExchanger-CurrencyExchangerUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -258,6 +260,7 @@
 			isa = PBXGroup;
 			children = (
 				7C83C0C723A34ABB002B667A /* UIView+Extensions.swift */,
+				7C83C0D723A3A875002B667A /* String+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -559,6 +562,7 @@
 				7C778A00239CF44700B5E838 /* TabCoordinator.swift in Sources */,
 				7C778A07239CF7E600B5E838 /* MainView.swift in Sources */,
 				7C778A0C239CF86000B5E838 /* MainVCDelegate.swift in Sources */,
+				7C83C0D823A3A875002B667A /* String+Extensions.swift in Sources */,
 				7C83C0C823A34ABB002B667A /* UIView+Extensions.swift in Sources */,
 				7C7789FC239CF3FB00B5E838 /* Coordinator.swift in Sources */,
 				7C778A09239CF7F500B5E838 /* MainCoordinator.swift in Sources */,

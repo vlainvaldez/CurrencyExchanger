@@ -55,19 +55,16 @@ extension MainVC: UICollectionViewDataSource {
         
         switch row {
         case .balanceRow:
-
             guard
                 let cell = collectionView.dequeueReusableCell(
                     withReuseIdentifier: BalancesRow.identifier,
                     for: indexPath
                 ) as? BalancesRow
             
-            else { return UICollectionViewCell() }
-            
+            else { return UICollectionViewCell() }            
             return cell
             
         case .sellRow:
-            
             guard
                 let cell = collectionView.dequeueReusableCell(
                     withReuseIdentifier: SellRow.identifier,
@@ -75,11 +72,9 @@ extension MainVC: UICollectionViewDataSource {
                 ) as? SellRow
             
             else { return UICollectionViewCell() }
-            
             return cell
             
         case .receiveRow:
-            
             guard
                 let cell = collectionView.dequeueReusableCell(
                     withReuseIdentifier: ReceiveRow.identifier,
@@ -87,11 +82,9 @@ extension MainVC: UICollectionViewDataSource {
                 ) as? ReceiveRow
             
             else { return UICollectionViewCell() }
-            
             return cell
             
         case .submitRow:
-            
             guard
                 let cell = collectionView.dequeueReusableCell(
                     withReuseIdentifier: SubmitRow.identifier,
@@ -99,7 +92,6 @@ extension MainVC: UICollectionViewDataSource {
                 ) as? SubmitRow
             
             else { return UICollectionViewCell() }
-            
             return cell
         }
     }
