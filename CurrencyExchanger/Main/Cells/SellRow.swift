@@ -13,6 +13,8 @@ public class SellRow: UICollectionViewCell {
     // MARK: - Initializer
     public override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        self.backgroundColor = UIColor.yellow
     }
     
     required init?(coder: NSCoder) {

@@ -13,6 +13,8 @@ public class ReceiveRow: UICollectionViewCell {
     // MARK: - Initializer
     public override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        self.backgroundColor = UIColor.blue
     }
     
     required init?(coder: NSCoder) {

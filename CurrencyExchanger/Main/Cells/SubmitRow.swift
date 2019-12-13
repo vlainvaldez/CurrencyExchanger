@@ -13,6 +13,8 @@ public class SubmitRow: UICollectionViewCell {
     // MARK: - Initializer
     public override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        self.backgroundColor = UIColor.red
     }
     
     required init?(coder: NSCoder) {

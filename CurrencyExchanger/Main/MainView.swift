@@ -23,6 +23,8 @@ public class MainView: UIView {
         )
         view.showsVerticalScrollIndicator = false
         view.allowsMultipleSelection = false
+        view.isScrollEnabled = true
+        view.bounces = true
         view.backgroundColor = AppUI.Color.sky
         return view
     }()

@@ -9,8 +9,8 @@
 import Foundation
 
 public enum MainRows: Int, CaseIterable {
-    case receiveRow = 0
+    case balanceRow = 0    
     case sellRow
-    case balanceRow
+    case receiveRow
     case submitRow
 }
