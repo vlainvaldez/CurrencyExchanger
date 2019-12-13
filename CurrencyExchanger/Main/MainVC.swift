@@ -141,17 +141,20 @@ extension MainVC {
 extension MainVC: SellRowDelegate {
     public func sellChangeCurrency(completion: @escaping (Int) -> Void) {
         
-        let alert = UIAlertController(title: "Car Choices", message: "\n\n\n\n\n\n", preferredStyle: .alert)
+        let alert = UIAlertController(
+            title: "Currencies Choices",
+            message: "\n\n\n\n\n\n",
+            preferredStyle: .alert
+        )
 
-        
         self.rootView.currencyPicker.frame = CGRect(x: 5, y: 20, width: 250, height: 140)
         
         alert.view.addSubview(self.rootView.currencyPicker)
         
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (UIAlertAction) in
+        alert.addAction(UIAlertAction(title: "OK", style: .default) { (alertAction: UIAlertAction) -> Void in
             completion(2)
-        }))
+        })
         
         self.present(alert,animated: true, completion: nil )
 
