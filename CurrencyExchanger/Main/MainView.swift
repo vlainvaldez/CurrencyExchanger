@@ -28,6 +28,12 @@ public class MainView: UIView {
         view.backgroundColor = AppUI.Color.sky
         return view
     }()
+    
+    public let currencyPicker: UIPickerView = {
+        let view: UIPickerView = UIPickerView()
+        view.tag = 1
+        return view
+    }()
 
     // MARK: - Initializer
     public override init(frame: CGRect) {

@@ -11,6 +11,9 @@ import SnapKit
 
 public class SellRow: UICollectionViewCell {
     
+    // MARK: - Delegate Declaration
+    public weak var delegate: SellRowDelegate?
+    
     // MARK: - Subviews
     public var amountTextField: TextField = {
         let view: TextField = TextField()
@@ -21,7 +24,7 @@ public class SellRow: UICollectionViewCell {
         view.keyboardType = .numberPad
         return view
     }()
-    
+
     public let currencyButton: UIButton = {
         let view: UIButton = UIButton()
         view.setTitle("EUR", for: UIControl.State.normal)
@@ -44,7 +47,7 @@ public class SellRow: UICollectionViewCell {
         view.textAlignment = .center
         view.font = UIFont.systemFont(ofSize: 15.0, weight: UIFont.Weight.bold)
         return view
-    }()
+    }()                
     
     // MARK: - Initializer
     public override init(frame: CGRect) {
@@ -55,27 +58,30 @@ public class SellRow: UICollectionViewCell {
         self.subviews(forAutoLayout: [
            self.sellLabel, self.amountTextField,
            self.currencyButton
-       ])
+        ])
        
-       self.sellLabel.snp.remakeConstraints { (make: ConstraintMaker) -> Void in
+        self.sellLabel.snp.remakeConstraints { (make: ConstraintMaker) -> Void in
            make.centerY.equalToSuperview()
            make.leading.equalToSuperview().offset(10.0)
            make.width.equalTo(80.0)
-       }
+        }
 
-       self.amountTextField.snp.remakeConstraints { [unowned self] (make: ConstraintMaker) -> Void in
+        self.amountTextField.snp.remakeConstraints { [unowned self] (make: ConstraintMaker) -> Void in
            make.top.equalToSuperview().offset(30.0)
            make.leading.equalTo(self.sellLabel.snp.trailing).offset(5.0)
            make.trailing.equalTo(self.currencyButton.snp.leading)
            make.bottom.equalToSuperview().inset(30.0)
-       }
+        }
        
-       self.currencyButton.snp.remakeConstraints { (make: ConstraintMaker) -> Void in
+        self.currencyButton.snp.remakeConstraints { (make: ConstraintMaker) -> Void in
            make.top.equalToSuperview().offset(30.0)
            make.width.equalTo(80.0)
            make.trailing.equalToSuperview()
            make.bottom.equalToSuperview().inset(30.0)
-       }
+        }
+        
+        self.setTargetActions()
+        
     }
     
     required init?(coder: NSCoder) {
@@ -92,4 +98,26 @@ public class SellRow: UICollectionViewCell {
 // MARK: - Public APIs
 extension SellRow {
     public static var identifier: String = "SellRow"
+}
+
+// MARK: - Helper Methods
+extension SellRow {
+    
+    private func setTargetActions() {
+        self.currencyButton.addTarget(
+            self,
+            action: #selector(SellRow.currecyButtonTapped),
+            for: UIControl.Event.touchUpInside
+        )
+    }
+}
+
+// MARK: - Target Action Methods
+extension SellRow {
+    
+    @objc func currecyButtonTapped(_ sender: UIButton) {
+        self.delegate?.sellChangeCurrency(completion: { (currency: Int) -> Void in
+            print("SELROW CUREN \(currency)")
+        })
+    }
 }
