@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -26,6 +26,13 @@
 		7C778A09239CF7F500B5E838 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C778A08239CF7F500B5E838 /* MainCoordinator.swift */; };
 		7C778A0C239CF86000B5E838 /* MainVCDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C778A0B239CF86000B5E838 /* MainVCDelegate.swift */; };
 		7C778A0E239CFE5000B5E838 /* AppMainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C778A0D239CFE5000B5E838 /* AppMainCoordinator.swift */; };
+		7C83C0C823A34ABB002B667A /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C83C0C723A34ABB002B667A /* UIView+Extensions.swift */; };
+		7C83C0CA23A34DFC002B667A /* AppUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C83C0C923A34DFC002B667A /* AppUI.swift */; };
+		7C83C0CD23A34F55002B667A /* ReceiveRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C83C0CC23A34F55002B667A /* ReceiveRow.swift */; };
+		7C83C0CF23A34F82002B667A /* SellRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C83C0CE23A34F82002B667A /* SellRow.swift */; };
+		7C83C0D123A34FC7002B667A /* BalancesRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C83C0D023A34FC7002B667A /* BalancesRow.swift */; };
+		7C83C0D323A34FF6002B667A /* SubmitRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C83C0D223A34FF6002B667A /* SubmitRow.swift */; };
+		7C83C0D623A3569F002B667A /* MainRows.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C83C0D523A3569F002B667A /* MainRows.swift */; };
 		E241B53CBB0FB772EB28918D /* Pods_CurrencyExchanger_CurrencyExchangerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F772CE9CB14D409B66950369 /* Pods_CurrencyExchanger_CurrencyExchangerUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -75,6 +82,13 @@
 		7C778A08239CF7F500B5E838 /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
 		7C778A0B239CF86000B5E838 /* MainVCDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVCDelegate.swift; sourceTree = "<group>"; };
 		7C778A0D239CFE5000B5E838 /* AppMainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMainCoordinator.swift; sourceTree = "<group>"; };
+		7C83C0C723A34ABB002B667A /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
+		7C83C0C923A34DFC002B667A /* AppUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUI.swift; sourceTree = "<group>"; };
+		7C83C0CC23A34F55002B667A /* ReceiveRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveRow.swift; sourceTree = "<group>"; };
+		7C83C0CE23A34F82002B667A /* SellRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SellRow.swift; sourceTree = "<group>"; };
+		7C83C0D023A34FC7002B667A /* BalancesRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalancesRow.swift; sourceTree = "<group>"; };
+		7C83C0D223A34FF6002B667A /* SubmitRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitRow.swift; sourceTree = "<group>"; };
+		7C83C0D523A3569F002B667A /* MainRows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRows.swift; sourceTree = "<group>"; };
 		D079DE76353E2E6759ED2DD8 /* Pods-CurrencyExchanger.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CurrencyExchanger.release.xcconfig"; path = "Target Support Files/Pods-CurrencyExchanger/Pods-CurrencyExchanger.release.xcconfig"; sourceTree = "<group>"; };
 		E4AA9E720EAA1F5BA5333224 /* Pods-CurrencyExchanger.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CurrencyExchanger.debug.xcconfig"; path = "Target Support Files/Pods-CurrencyExchanger/Pods-CurrencyExchanger.debug.xcconfig"; sourceTree = "<group>"; };
 		F377BFC939346CDB4358B957 /* Pods-CurrencyExchanger-CurrencyExchangerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CurrencyExchanger-CurrencyExchangerUITests.release.xcconfig"; path = "Target Support Files/Pods-CurrencyExchanger-CurrencyExchangerUITests/Pods-CurrencyExchanger-CurrencyExchangerUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -134,6 +148,7 @@
 		7C094FC823994BF700B78FD7 /* CurrencyExchanger */ = {
 			isa = PBXGroup;
 			children = (
+				7C83C0C423A3491F002B667A /* Utilities */,
 				7C778A01239CF49900B5E838 /* Supporting Files */,
 				7C7789F4239CF24D00B5E838 /* Architecture */,
 				7C778A02239CF4AE00B5E838 /* App Controller */,
@@ -212,6 +227,8 @@
 		7C778A03239CF76A00B5E838 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				7C83C0D423A35688002B667A /* Enums */,
+				7C83C0CB23A34F38002B667A /* Cells */,
 				7C778A0A239CF84900B5E838 /* Protocols */,
 				7C778A04239CF7D200B5E838 /* MainVC.swift */,
 				7C778A06239CF7E600B5E838 /* MainView.swift */,
@@ -228,6 +245,50 @@
 			path = Protocols;
 			sourceTree = "<group>";
 		};
+		7C83C0C423A3491F002B667A /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				7C83C0C623A34A7E002B667A /* Enums */,
+				7C83C0C523A34A71002B667A /* Extensions */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		7C83C0C523A34A71002B667A /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				7C83C0C723A34ABB002B667A /* UIView+Extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		7C83C0C623A34A7E002B667A /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				7C83C0C923A34DFC002B667A /* AppUI.swift */,
+			);
+			path = Enums;
+			sourceTree = "<group>";
+		};
+		7C83C0CB23A34F38002B667A /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				7C83C0CC23A34F55002B667A /* ReceiveRow.swift */,
+				7C83C0CE23A34F82002B667A /* SellRow.swift */,
+				7C83C0D023A34FC7002B667A /* BalancesRow.swift */,
+				7C83C0D223A34FF6002B667A /* SubmitRow.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		7C83C0D423A35688002B667A /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				7C83C0D523A3569F002B667A /* MainRows.swift */,
+			);
+			path = Enums;
+			sourceTree = "<group>";
+		};
 		BA037D3810C1550A084BA89A /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -238,7 +299,6 @@
 				16D37F1D468CF47A1DA2B2E1 /* Pods-CurrencyExchangerTests.debug.xcconfig */,
 				29338F8AEB54FA81A4DFF27F /* Pods-CurrencyExchangerTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -491,16 +551,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C83C0D323A34FF6002B667A /* SubmitRow.swift in Sources */,
+				7C83C0CF23A34F82002B667A /* SellRow.swift in Sources */,
+				7C83C0D623A3569F002B667A /* MainRows.swift in Sources */,
 				7C7789F7239CF2D100B5E838 /* AbstractCoordinator.swift in Sources */,
 				7C094FCA23994BF700B78FD7 /* AppDelegate.swift in Sources */,
 				7C778A00239CF44700B5E838 /* TabCoordinator.swift in Sources */,
 				7C778A07239CF7E600B5E838 /* MainView.swift in Sources */,
 				7C778A0C239CF86000B5E838 /* MainVCDelegate.swift in Sources */,
+				7C83C0C823A34ABB002B667A /* UIView+Extensions.swift in Sources */,
 				7C7789FC239CF3FB00B5E838 /* Coordinator.swift in Sources */,
 				7C778A09239CF7F500B5E838 /* MainCoordinator.swift in Sources */,
+				7C83C0D123A34FC7002B667A /* BalancesRow.swift in Sources */,
 				7C778A05239CF7D200B5E838 /* MainVC.swift in Sources */,
+				7C83C0CD23A34F55002B667A /* ReceiveRow.swift in Sources */,
 				7C7789FE239CF41E00B5E838 /* TabBarCoordinator.swift in Sources */,
 				7C778A0E239CFE5000B5E838 /* AppMainCoordinator.swift in Sources */,
+				7C83C0CA23A34DFC002B667A /* AppUI.swift in Sources */,
 				7C094FCC23994BF700B78FD7 /* SceneDelegate.swift in Sources */,
 				7C7789FA239CF3D100B5E838 /* AnyTabCoordinator.swift in Sources */,
 			);

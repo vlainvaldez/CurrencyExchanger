@@ -7,13 +7,39 @@
 //
 
 import UIKit
+import SnapKit
 
 public class MainView: UIView {
+    
+    // MARK: - Subviews
+    public var collectionView: UICollectionView = {
+        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        layout.scrollDirection = UICollectionView.ScrollDirection.vertical
+        layout.minimumLineSpacing = 0.0
+        layout.minimumInteritemSpacing = 0.0
+        let view: UICollectionView = UICollectionView(
+            frame: CGRect.zero,
+            collectionViewLayout: layout
+        )
+        view.showsVerticalScrollIndicator = false
+        view.allowsMultipleSelection = false
+        view.backgroundColor = AppUI.Color.sky
+        return view
+    }()
     
     // MARK: - Initializer
     public override init(frame: CGRect) {
         super.init(frame: frame)        
         self.backgroundColor = UIColor.white
+        
+        self.subviews(forAutoLayout: [
+            self.collectionView
+        ])
+        
+        self.collectionView.snp.remakeConstraints { (make: ConstraintMaker) -> Void in
+            make.edges.equalToSuperview()
+        }
+        
     }
     
     public required init?(coder: NSCoder) {
