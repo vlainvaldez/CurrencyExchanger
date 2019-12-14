@@ -14,15 +14,15 @@ public struct CurrencyAPIService {
     // MARK: - Store Properties
     private let provider: MoyaProvider = MoyaProvider<CurrencyRequest>()
     
-    public func getTracks(completion: @escaping (Currency) -> Void ) {
+    public func getTracks(completion: @escaping (Exchange) -> Void ) {
         
         self.provider.request(CurrencyRequest.getCurrencies) { (result) in
             switch result {
             case .success(let response):
                 
                 do{
-                    let currency: Currency = try JSONDecoder().decode(
-                        Currency.self,
+                    let currency: Exchange = try JSONDecoder().decode(
+                        Exchange.self,
                         from: response.data
                     )
                     completion(currency)

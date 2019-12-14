@@ -94,7 +94,6 @@ extension ReceiveRow {
     public static var identifier: String = "ReceiveRow"
 }
 
-
 public class TextField: UITextField {
 
     let padding = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)

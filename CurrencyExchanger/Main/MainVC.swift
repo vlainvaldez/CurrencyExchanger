@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PKHUD
 
 public final class MainVC: UIViewController {
     
@@ -39,11 +40,15 @@ public final class MainVC: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Currency Exchanger"
-        self.setCurrencyPicker()
+        self.setCurrencyPicker()        
+        self.fetchCurrency()
     }
     
     // MARK: - Stored Properties
-    private let currencies: [String] = ["EUR", "USD", "SGD"]
+    private var exchangeCurrencies: [Currency] = [Currency]()
+    private var exchange: Exchange?
+    private var sellCurrency: Currency?
+    private var receiveCurrency: Currency?
 }
 
 // MARK: - UICollectionViewDataSource Methods
@@ -131,15 +136,19 @@ extension MainVC {
     }
     
     private func setCurrencyPicker() {
-        self.rootView.currencyPicker.dataSource = self
-        self.rootView.currencyPicker.delegate = self        
+        self.rootView.sellCurrencyPicker.dataSource = self
+        self.rootView.sellCurrencyPicker.delegate = self        
     }
     
+    private func setPickerValues(currencies: [Currency] ) {
+        self.exchangeCurrencies = currencies
+        self.rootView.sellCurrencyPicker.reloadAllComponents()
+    }
 }
 
 // MARK: - SellRowDelegate Methods
 extension MainVC: SellRowDelegate {
-    public func sellChangeCurrency(completion: @escaping (Int) -> Void) {
+    public func sellChangeCurrency(completion: @escaping (Currency) -> Void) {
         
         let alert = UIAlertController(
             title: "Currencies Choices",
@@ -147,18 +156,38 @@ extension MainVC: SellRowDelegate {
             preferredStyle: .alert
         )
 
-        self.rootView.currencyPicker.frame = CGRect(x: 5, y: 20, width: 250, height: 140)
+        self.rootView.sellCurrencyPicker.frame = CGRect(x: 5, y: 20, width: 250, height: 140)
         
-        alert.view.addSubview(self.rootView.currencyPicker)
+        alert.view.addSubview(self.rootView.sellCurrencyPicker)
         
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "OK", style: .default) { (alertAction: UIAlertAction) -> Void in
-            completion(2)
+        alert.addAction(UIAlertAction(title: "OK", style: .default) { [weak self] (alertAction: UIAlertAction) -> Void in
+            guard
+                let self = self,
+                let currency = self.sellCurrency
+            else { return }            
+            completion(currency)
         })
         
         self.present(alert,animated: true, completion: nil )
 
     }   
+}
+
+// MARK: - Network API Access
+extension MainVC {
+    
+    private func fetchCurrency() {
+        HUD.show(HUDContentType.progress)
+        self.delegate?.getCurrency { [weak self] (exchange: Exchange) -> Void in
+            guard let self = self else { return }
+            HUD.hide()
+            self.exchange = exchange
+            let currencies = exchange.rates.map { Currency(symbol: $0.key, rate: $0.value) }
+            self.setPickerValues(currencies: currencies)
+        }
+    }
+    
 }
 
 // MARK: - UIPickerViewDataSource Methods
@@ -170,7 +199,7 @@ extension MainVC: UIPickerViewDataSource {
     }
     
     public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return self.currencies.count
+        return self.exchangeCurrencies.count
     }
 }
 
@@ -178,10 +207,20 @@ extension MainVC: UIPickerViewDataSource {
 extension MainVC: UIPickerViewDelegate {
     
     public func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return self.currencies[row]
+        return self.exchangeCurrencies[row].symbol
     }
     
     public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        print("row \(row) tag \(pickerView.tag)")
+        
+        let pickerType = PickerType(rawValue: pickerView.tag)
+        
+        switch pickerType {
+        case .sell:
+            self.sellCurrency = self.exchangeCurrencies[row]
+        case .receive:
+            self.receiveCurrency = self.exchangeCurrencies[row]
+        case .none:
+            break
+        }
     }
 }

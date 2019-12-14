@@ -29,9 +29,9 @@ public class MainView: UIView {
         return view
     }()
     
-    public let currencyPicker: UIPickerView = {
+    public let sellCurrencyPicker: UIPickerView = {
         let view: UIPickerView = UIPickerView()
-        view.tag = 1
+        view.tag = 0
         return view
     }()
 

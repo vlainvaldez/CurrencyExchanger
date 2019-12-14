@@ -9,6 +9,6 @@
 import UIKit
 
 public protocol SellRowDelegate: class {
-    func sellChangeCurrency(completion: @escaping (Int) -> Void )
+    func sellChangeCurrency(completion: @escaping (Currency) -> Void )
 }
 

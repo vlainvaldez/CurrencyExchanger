@@ -8,8 +8,16 @@
 
 import Foundation
 
-public struct Currency: Decodable {
-    public let rates : [String: Double]
-    public let base: String
-    public let date: String
+public class Currency: NSObject {
+    
+    // MARK: - Initializer
+    public init(symbol: String, rate: Double) {
+        self.symbol = symbol
+        self.rate = rate
+        super.init()
+    }
+    
+    // MARK: - Stored Properties
+    public let symbol: String
+    public let rate: Double
 }

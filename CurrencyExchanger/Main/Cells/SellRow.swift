@@ -49,6 +49,13 @@ public class SellRow: UICollectionViewCell {
         return view
     }()                
     
+    // MARK: - Stored Properties
+    public var currency: Currency? {
+        didSet{
+            print("\(currency!.symbol) \(currency!.rate)")
+        }
+    }
+    
     // MARK: - Initializer
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -116,8 +123,9 @@ extension SellRow {
 extension SellRow {
     
     @objc func currecyButtonTapped(_ sender: UIButton) {
-        self.delegate?.sellChangeCurrency(completion: { (currency: Int) -> Void in
-            print("SELROW CUREN \(currency)")
+        self.delegate?.sellChangeCurrency(completion: { [weak self] (currency: Currency) -> Void in
+            guard let self = self else { return }
+            self.currency = currency
         })
     }
 }

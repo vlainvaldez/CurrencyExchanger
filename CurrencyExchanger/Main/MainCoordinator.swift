@@ -22,15 +22,20 @@ public final class MainCoordinator: AbstractCoordinator {
     // MARK: - Instance Methods
     public override func start() {
         super.start()
-                
-        self.currencyAPIService.getTracks { (currency: Currency) -> Void in            
-            print(currency.rates)
-        }
-        
         let vc: MainVC = MainVC()
-        
+        vc.delegate = self
         self.navigationController.setViewControllers([vc], animated: true)
         self.add(childCoordinator: self)
     }
     
+}
+
+// MARK: - MainVCDelegate Methods
+extension MainCoordinator: MainVCDelegate {
+    
+    public func getCurrency(completion: @escaping (Exchange) -> Void) {
+        self.currencyAPIService.getTracks { (exchange: Exchange) -> Void in
+            completion(exchange)
+        }
+    }
 }
