@@ -8,6 +8,8 @@
 
 import UIKit
 import SnapKit
+import RxCocoa
+import RxSwift
 
 public class SellRow: UICollectionViewCell {
     
@@ -37,6 +39,7 @@ public class SellRow: UICollectionViewCell {
             weight: UIFont.Weight.bold
         )
         view.accessibilityIdentifier = "saveButton_UIButton"
+        view.isEnabled = false
         return view
     }()
     
@@ -55,6 +58,8 @@ public class SellRow: UICollectionViewCell {
             print("\(currency!.symbol) \(currency!.rate)")
         }
     }
+    private var viewModel: SellRowViewModel?
+    private var disposeBag: DisposeBag!
     
     // MARK: - Initializer
     public override init(frame: CGRect) {
@@ -89,6 +94,8 @@ public class SellRow: UICollectionViewCell {
         
         self.setTargetActions()
         
+        self.disposeBag = DisposeBag()
+        
     }
     
     required init?(coder: NSCoder) {
@@ -100,11 +107,25 @@ public class SellRow: UICollectionViewCell {
         
         self.amountTextField.setRadius(radius: 10.0)
     }
+    
+    public override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        self.disposeBag = nil
+    }
 }
 
 // MARK: - Public APIs
 extension SellRow {
     public static var identifier: String = "SellRow"
+    
+    public func configure(with viewModel: SellRowViewModel) {
+        self.viewModel = viewModel
+        self.amountTextField.rx.text.orEmpty
+            .bind(to: viewModel.input.amount)
+            .disposed(by: self.disposeBag)
+        
+    }
 }
 
 // MARK: - Helper Methods
@@ -124,8 +145,13 @@ extension SellRow {
     
     @objc func currecyButtonTapped(_ sender: UIButton) {
         self.delegate?.sellChangeCurrency(completion: { [weak self] (currency: Currency) -> Void in
-            guard let self = self else { return }
+            guard
+                let self = self,
+                let viewModel = self.viewModel
+            else { return }
             self.currency = currency
+            self.currencyButton.setTitle(currency.symbol, for: UIControl.State.normal)
+            viewModel.input.currencySubject.onNext(currency)
         })
     }
 }

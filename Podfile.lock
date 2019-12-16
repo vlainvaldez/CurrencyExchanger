@@ -15,6 +15,11 @@ PODS:
   - RealmSwift (4.1.1):
     - Realm (= 4.1.1)
   - Result (4.1.0)
+  - RxAtomic (4.4.2)
+  - RxCocoa (4.4.1):
+    - RxSwift (~> 4.0)
+  - RxSwift (4.4.1):
+    - RxAtomic (~> 4.4)
   - SnapKit (5.0.1)
 
 DEPENDENCIES:
@@ -22,6 +27,8 @@ DEPENDENCIES:
   - Moya (~> 13.0)
   - PKHUD (~> 5.0)
   - RealmSwift
+  - RxCocoa (= 4.4.1)
+  - RxSwift (= 4.4.1)
   - SnapKit (~> 5.0.0)
 
 SPEC REPOS:
@@ -33,6 +40,9 @@ SPEC REPOS:
     - Realm
     - RealmSwift
     - Result
+    - RxAtomic
+    - RxCocoa
+    - RxSwift
     - SnapKit
 
 SPEC CHECKSUMS:
@@ -43,8 +53,11 @@ SPEC CHECKSUMS:
   Realm: 25f0a8244cbb1c2271c922963ea8666fc2d8104d
   RealmSwift: 9e2657b33764f80e4a4dffd6d440e24715782052
   Result: bd966fac789cc6c1563440b348ab2598cc24d5c7
+  RxAtomic: d00e97c10db88c6f08540e0bf2752fc5a2404167
+  RxCocoa: 2f35a76bf8887872e28a1914112395b11b8e0e64
+  RxSwift: 92fcf68dfef21f3e2ab1965363d9e7b3d787597e
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
 
-PODFILE CHECKSUM: 4095853ed9ede84a8f51bbc781a892c4cb7e7398
+PODFILE CHECKSUM: 0f0137d326b5bbb4643bff9828ba2af11c86a8f2
 
 COCOAPODS: 1.8.4

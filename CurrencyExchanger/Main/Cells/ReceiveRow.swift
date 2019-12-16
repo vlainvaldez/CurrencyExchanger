@@ -8,6 +8,8 @@
 
 import UIKit
 import SnapKit
+import RxCocoa
+import RxSwift
 
 public class ReceiveRow: UICollectionViewCell {
     
@@ -56,6 +58,7 @@ public class ReceiveRow: UICollectionViewCell {
             print("\(currency!.symbol) \(currency!.rate)")
         }
     }
+    private var viewModel: ReceiveRowViewModel?
     
     // MARK: - Initializer
     public override init(frame: CGRect) {
@@ -105,6 +108,10 @@ public class ReceiveRow: UICollectionViewCell {
 // MARK: - Public APIs
 extension ReceiveRow {
     public static var identifier: String = "ReceiveRow"
+    
+    public func configure(with viewModel: ReceiveRowViewModel) {
+        self.viewModel = viewModel
+    }
 }
 
 // MARK: - Helper Methods
@@ -124,8 +131,13 @@ extension ReceiveRow {
     
     @objc func currecyButtonTapped(_ sender: UIButton) {
         self.delegate?.receiveChangeCurrency(completion: { [weak self] (currency: Currency) -> Void in
-            guard let self = self else { return }
+            guard
+                let self = self,
+                let viewModel = self.viewModel
+            else { return }
             self.currency = currency
+            self.currencyButton.setTitle(currency.symbol, for: UIControl.State.normal)
+            viewModel.input.currency.onNext(currency)
         })
     }
 }

@@ -8,6 +8,8 @@
 
 import UIKit
 import PKHUD
+import RxCocoa
+import RxSwift
 
 public final class MainVC: UIViewController {
     
@@ -26,6 +28,7 @@ public final class MainVC: UIViewController {
     // MARK: - Deinitializer
     deinit {
         print("\(type(of: self)) was deallocated")
+        self.disposeBag = nil
     }
     
     // MARK: - LifeCycle Methods
@@ -42,6 +45,7 @@ public final class MainVC: UIViewController {
         self.title = "Currency Exchanger"
         self.setCurrencyPicker()        
         self.fetchCurrency()
+
     }
     
     // MARK: - Stored Properties
@@ -49,6 +53,9 @@ public final class MainVC: UIViewController {
     private var exchange: Exchange?
     private var sellCurrency: Currency?
     private var receiveCurrency: Currency?
+    private var sellRowViewModel: SellRowViewModel = SellRowViewModel()
+    private var receiveRowViewModel: ReceiveRowViewModel = ReceiveRowViewModel()
+    private var disposeBag: DisposeBag!
 }
 
 // MARK: - UICollectionViewDataSource Methods
@@ -82,6 +89,7 @@ extension MainVC: UICollectionViewDataSource {
             
             else { return UICollectionViewCell() }
             cell.delegate = self
+            cell.configure(with: self.sellRowViewModel)
             return cell
             
         case .receiveRow:
@@ -93,6 +101,7 @@ extension MainVC: UICollectionViewDataSource {
             
             else { return UICollectionViewCell() }
             cell.delegate = self
+            cell.configure(with: self.receiveRowViewModel)
             return cell
             
         case .submitRow:
@@ -103,6 +112,7 @@ extension MainVC: UICollectionViewDataSource {
                 ) as? SubmitRow
             
             else { return UICollectionViewCell() }
+            cell.delegate = self
             return cell
         }
     }
@@ -197,7 +207,24 @@ extension MainVC: ReceiveRowDelegate {
         
         self.present(alert,animated: true, completion: nil )
     }
-    
+}
+
+// MARK: -
+extension MainVC: SubmitRowDelegate {
+    public func submitTapped() {
+        
+        guard
+            let receiveCurrency = self.receiveRowViewModel.output.currency
+        else { return }
+
+        let computation = Double(self.sellRowViewModel.output.amount.value)! * Double(receiveCurrency.rate)
+        let computationWithCommission = computation - 0.70
+        let roundedValue = computationWithCommission.roundTo(places: 2)
+        
+        print("value: \(computation)")
+        print("value with commision: \(computationWithCommission)")
+        print("Rounded Value: \(roundedValue)")
+    }
 }
 
 // MARK: - Network API Access

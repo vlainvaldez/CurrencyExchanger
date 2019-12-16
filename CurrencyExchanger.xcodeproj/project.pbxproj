@@ -42,6 +42,11 @@
 		7C83C0E823A49C66002B667A /* PickerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C83C0E723A49C66002B667A /* PickerType.swift */; };
 		7C83C0EC23A73A34002B667A /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C83C0EB23A73A34002B667A /* TextField.swift */; };
 		7C83C0EE23A73A81002B667A /* ReceiveRowDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C83C0ED23A73A81002B667A /* ReceiveRowDelegate.swift */; };
+		7C83C0F123A74950002B667A /* SellRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C83C0F023A74950002B667A /* SellRowViewModel.swift */; };
+		7C83C0F323A74A34002B667A /* ReceiveRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C83C0F223A74A34002B667A /* ReceiveRowViewModel.swift */; };
+		7C86FC6823A74D7900A726BE /* InputOutputViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C86FC6723A74D7900A726BE /* InputOutputViewModel.swift */; };
+		7C86FC6A23A76BFC00A726BE /* SubmitRowDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C86FC6923A76BFC00A726BE /* SubmitRowDelegate.swift */; };
+		7C86FC6C23A782F600A726BE /* Double+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C86FC6B23A782F600A726BE /* Double+Extensions.swift */; };
 		E241B53CBB0FB772EB28918D /* Pods_CurrencyExchanger_CurrencyExchangerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F772CE9CB14D409B66950369 /* Pods_CurrencyExchanger_CurrencyExchangerUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -107,6 +112,11 @@
 		7C83C0E723A49C66002B667A /* PickerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerType.swift; sourceTree = "<group>"; };
 		7C83C0EB23A73A34002B667A /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		7C83C0ED23A73A81002B667A /* ReceiveRowDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveRowDelegate.swift; sourceTree = "<group>"; };
+		7C83C0F023A74950002B667A /* SellRowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SellRowViewModel.swift; sourceTree = "<group>"; };
+		7C83C0F223A74A34002B667A /* ReceiveRowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveRowViewModel.swift; sourceTree = "<group>"; };
+		7C86FC6723A74D7900A726BE /* InputOutputViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputOutputViewModel.swift; sourceTree = "<group>"; };
+		7C86FC6923A76BFC00A726BE /* SubmitRowDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitRowDelegate.swift; sourceTree = "<group>"; };
+		7C86FC6B23A782F600A726BE /* Double+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extensions.swift"; sourceTree = "<group>"; };
 		D079DE76353E2E6759ED2DD8 /* Pods-CurrencyExchanger.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CurrencyExchanger.release.xcconfig"; path = "Target Support Files/Pods-CurrencyExchanger/Pods-CurrencyExchanger.release.xcconfig"; sourceTree = "<group>"; };
 		E4AA9E720EAA1F5BA5333224 /* Pods-CurrencyExchanger.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CurrencyExchanger.debug.xcconfig"; path = "Target Support Files/Pods-CurrencyExchanger/Pods-CurrencyExchanger.debug.xcconfig"; sourceTree = "<group>"; };
 		F377BFC939346CDB4358B957 /* Pods-CurrencyExchanger-CurrencyExchangerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CurrencyExchanger-CurrencyExchangerUITests.release.xcconfig"; path = "Target Support Files/Pods-CurrencyExchanger-CurrencyExchangerUITests/Pods-CurrencyExchanger-CurrencyExchangerUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -247,6 +257,7 @@
 		7C778A03239CF76A00B5E838 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				7C83C0EF23A7491E002B667A /* ViewModels */,
 				7C83C0D423A35688002B667A /* Enums */,
 				7C83C0CB23A34F38002B667A /* Cells */,
 				7C778A0A239CF84900B5E838 /* Protocols */,
@@ -261,6 +272,7 @@
 			isa = PBXGroup;
 			children = (
 				7C778A0B239CF86000B5E838 /* MainVCDelegate.swift */,
+				7C86FC6723A74D7900A726BE /* InputOutputViewModel.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -280,6 +292,7 @@
 			children = (
 				7C83C0C723A34ABB002B667A /* UIView+Extensions.swift */,
 				7C83C0D723A3A875002B667A /* String+Extensions.swift */,
+				7C86FC6B23A782F600A726BE /* Double+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -318,6 +331,7 @@
 			children = (
 				7C83C0DA23A3D1C7002B667A /* SellRowDelegate.swift */,
 				7C83C0ED23A73A81002B667A /* ReceiveRowDelegate.swift */,
+				7C86FC6923A76BFC00A726BE /* SubmitRowDelegate.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -354,6 +368,15 @@
 				7C83C0EB23A73A34002B667A /* TextField.swift */,
 			);
 			path = Classes;
+			sourceTree = "<group>";
+		};
+		7C83C0EF23A7491E002B667A /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				7C83C0F023A74950002B667A /* SellRowViewModel.swift */,
+				7C83C0F223A74A34002B667A /* ReceiveRowViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		BA037D3810C1550A084BA89A /* Pods */ = {
@@ -621,13 +644,17 @@
 				7C83C0D323A34FF6002B667A /* SubmitRow.swift in Sources */,
 				7C83C0CF23A34F82002B667A /* SellRow.swift in Sources */,
 				7C83C0D623A3569F002B667A /* MainRows.swift in Sources */,
+				7C83C0F123A74950002B667A /* SellRowViewModel.swift in Sources */,
 				7C7789F7239CF2D100B5E838 /* AbstractCoordinator.swift in Sources */,
 				7C83C0DE23A3E8B9002B667A /* CurrencyRequest.swift in Sources */,
 				7C83C0EE23A73A81002B667A /* ReceiveRowDelegate.swift in Sources */,
+				7C83C0F323A74A34002B667A /* ReceiveRowViewModel.swift in Sources */,
 				7C094FCA23994BF700B78FD7 /* AppDelegate.swift in Sources */,
+				7C86FC6C23A782F600A726BE /* Double+Extensions.swift in Sources */,
 				7C83C0E623A49AB3002B667A /* Currency.swift in Sources */,
 				7C778A00239CF44700B5E838 /* TabCoordinator.swift in Sources */,
 				7C778A07239CF7E600B5E838 /* MainView.swift in Sources */,
+				7C86FC6823A74D7900A726BE /* InputOutputViewModel.swift in Sources */,
 				7C778A0C239CF86000B5E838 /* MainVCDelegate.swift in Sources */,
 				7C83C0D823A3A875002B667A /* String+Extensions.swift in Sources */,
 				7C83C0C823A34ABB002B667A /* UIView+Extensions.swift in Sources */,
@@ -640,6 +667,7 @@
 				7C83C0E823A49C66002B667A /* PickerType.swift in Sources */,
 				7C778A05239CF7D200B5E838 /* MainVC.swift in Sources */,
 				7C83C0CD23A34F55002B667A /* ReceiveRow.swift in Sources */,
+				7C86FC6A23A76BFC00A726BE /* SubmitRowDelegate.swift in Sources */,
 				7C7789FE239CF41E00B5E838 /* TabBarCoordinator.swift in Sources */,
 				7C778A0E239CFE5000B5E838 /* AppMainCoordinator.swift in Sources */,
 				7C83C0CA23A34DFC002B667A /* AppUI.swift in Sources */,

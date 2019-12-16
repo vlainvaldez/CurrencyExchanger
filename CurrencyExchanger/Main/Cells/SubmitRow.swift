@@ -11,8 +11,11 @@ import SnapKit
 
 public class SubmitRow: UICollectionViewCell {
     
+    // MARK: - Delegate Declaration
+    public weak var delegate: SubmitRowDelegate?
+    
     // MARK: - Subviews
-    public let saveButton: UIButton = {
+    public let submitButton: UIButton = {
         let view: UIButton = UIButton()
         view.setTitle("Submit", for: UIControl.State.normal)
         view.setTitleColor(
@@ -35,15 +38,17 @@ public class SubmitRow: UICollectionViewCell {
         self.backgroundColor = UIColor.clear
         
         self.subviews(forAutoLayout: [
-            self.saveButton
+            self.submitButton
         ])
         
-        self.saveButton.snp.remakeConstraints { (make: ConstraintMaker) -> Void in
+        self.submitButton.snp.remakeConstraints { (make: ConstraintMaker) -> Void in
             make.top.equalToSuperview().offset(20.0)
             make.leading.equalToSuperview().offset(50.0)
             make.trailing.equalToSuperview().inset(50.0)
             make.bottom.equalToSuperview().inset(20.0)
         }
+        
+        self.setUpTargetActions()
     }
     
     required init?(coder: NSCoder) {
@@ -53,7 +58,7 @@ public class SubmitRow: UICollectionViewCell {
     public override func layoutSubviews() {
         super.layoutSubviews()
         
-        self.saveButton.setRadius(radius: 10)
+        self.submitButton.setRadius(radius: 10)
     }
 }
 
@@ -62,3 +67,22 @@ extension SubmitRow {
     public static var identifier: String = "SubmitRow"
 }
 
+// MARK: - Helper Methods
+extension SubmitRow {
+    
+    private func setUpTargetActions() {
+        self.submitButton.addTarget(
+            self,
+            action: #selector(SubmitRow.submitButtonTapped),
+            for: UIControl.Event.touchUpInside
+        )
+    }
+}
+
+
+// MARK: - Target Action Methods
+extension SubmitRow {
+    @objc func submitButtonTapped() {
+        self.delegate?.submitTapped()
+    }
+}

@@ -11,6 +11,8 @@ target 'CurrencyExchanger' do
   pod 'Kingfisher'
   pod 'PKHUD', '~> 5.0'
   pod 'RealmSwift'
+  pod 'RxSwift', '4.4.1'
+  pod 'RxCocoa', '4.4.1'
 
   target 'CurrencyExchangerTests' do
     inherit! :search_paths
