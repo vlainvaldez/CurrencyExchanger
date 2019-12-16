@@ -81,9 +81,7 @@ extension MainVC: UICollectionViewDataSource {
                 ) as? SellRow
             
             else { return UICollectionViewCell() }
-            
             cell.delegate = self
-            
             return cell
             
         case .receiveRow:
@@ -94,6 +92,7 @@ extension MainVC: UICollectionViewDataSource {
                 ) as? ReceiveRow
             
             else { return UICollectionViewCell() }
+            cell.delegate = self
             return cell
             
         case .submitRow:
@@ -137,12 +136,15 @@ extension MainVC {
     
     private func setCurrencyPicker() {
         self.rootView.sellCurrencyPicker.dataSource = self
-        self.rootView.sellCurrencyPicker.delegate = self        
+        self.rootView.sellCurrencyPicker.delegate = self
+        self.rootView.receiveCurrencyPicker.dataSource = self
+        self.rootView.receiveCurrencyPicker.delegate = self
     }
     
     private func setPickerValues(currencies: [Currency] ) {
         self.exchangeCurrencies = currencies
         self.rootView.sellCurrencyPicker.reloadAllComponents()
+        self.rootView.receiveCurrencyPicker.reloadAllComponents()
     }
 }
 
@@ -155,8 +157,6 @@ extension MainVC: SellRowDelegate {
             message: "\n\n\n\n\n\n",
             preferredStyle: .alert
         )
-
-        self.rootView.sellCurrencyPicker.frame = CGRect(x: 5, y: 20, width: 250, height: 140)
         
         alert.view.addSubview(self.rootView.sellCurrencyPicker)
         
@@ -170,8 +170,34 @@ extension MainVC: SellRowDelegate {
         })
         
         self.present(alert,animated: true, completion: nil )
+    }
+    
+}
 
-    }   
+// MARK: - SellRowDelegate Methods
+extension MainVC: ReceiveRowDelegate {
+    public func receiveChangeCurrency(completion: @escaping (Currency) -> Void) {
+        
+        let alert = UIAlertController(
+            title: "Currencies Choices",
+            message: "\n\n\n\n\n\n",
+            preferredStyle: .alert
+        )
+        
+        alert.view.addSubview(self.rootView.receiveCurrencyPicker)
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "OK", style: .default) { [weak self] (alertAction: UIAlertAction) -> Void in
+            guard
+                let self = self,
+                let currency = self.receiveCurrency
+            else { return }
+            completion(currency)
+        })
+        
+        self.present(alert,animated: true, completion: nil )
+    }
+    
 }
 
 // MARK: - Network API Access

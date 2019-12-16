@@ -11,6 +11,9 @@ import SnapKit
 
 public class ReceiveRow: UICollectionViewCell {
     
+    // MARK: - Delegate Declarations
+    public weak var delegate: ReceiveRowDelegate?
+    
     // MARK: - Subviews
     public var amountTextField: TextField = {
         let view: TextField = TextField()
@@ -19,6 +22,7 @@ public class ReceiveRow: UICollectionViewCell {
         view.autocorrectionType = UITextAutocorrectionType.no
         view.backgroundColor = UIColor.white
         view.keyboardType = .numberPad
+        view.isEnabled = false
         return view
     }()
     
@@ -45,6 +49,13 @@ public class ReceiveRow: UICollectionViewCell {
         view.font = UIFont.systemFont(ofSize: 15.0, weight: UIFont.Weight.bold)
         return view
     }()
+    
+    // MARK: - Stored Properties
+    public var currency: Currency? {
+        didSet{
+            print("\(currency!.symbol) \(currency!.rate)")
+        }
+    }
     
     // MARK: - Initializer
     public override init(frame: CGRect) {
@@ -76,6 +87,8 @@ public class ReceiveRow: UICollectionViewCell {
             make.trailing.equalToSuperview()
             make.bottom.equalToSuperview().inset(30.0)
         }
+        
+        self.setTargetActions()
     }
     
     required init?(coder: NSCoder) {
@@ -94,19 +107,25 @@ extension ReceiveRow {
     public static var identifier: String = "ReceiveRow"
 }
 
-public class TextField: UITextField {
-
-    let padding = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
-
-    override public func textRect(forBounds bounds: CGRect) -> CGRect {
-        return bounds.inset(by: padding)
+// MARK: - Helper Methods
+extension ReceiveRow {
+    
+    private func setTargetActions() {
+        self.currencyButton.addTarget(
+            self,
+            action: #selector(ReceiveRow.currecyButtonTapped),
+            for: UIControl.Event.touchUpInside
+        )
     }
+}
 
-    override public func placeholderRect(forBounds bounds: CGRect) -> CGRect {
-        return bounds.inset(by: padding)
-    }
-
-    override public func editingRect(forBounds bounds: CGRect) -> CGRect {
-        return bounds.inset(by: padding)
+// MARK: - Target Action Methods
+extension ReceiveRow {
+    
+    @objc func currecyButtonTapped(_ sender: UIButton) {
+        self.delegate?.receiveChangeCurrency(completion: { [weak self] (currency: Currency) -> Void in
+            guard let self = self else { return }
+            self.currency = currency
+        })
     }
 }

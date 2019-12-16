@@ -32,6 +32,14 @@ public class MainView: UIView {
     public let sellCurrencyPicker: UIPickerView = {
         let view: UIPickerView = UIPickerView()
         view.tag = 0
+        view.frame = CGRect(x: 5, y: 20, width: 250, height: 140)
+        return view
+    }()
+    
+    public let receiveCurrencyPicker: UIPickerView = {
+        let view: UIPickerView = UIPickerView()
+        view.tag = 1
+        view.frame = CGRect(x: 5, y: 20, width: 250, height: 140)
         return view
     }()
 
