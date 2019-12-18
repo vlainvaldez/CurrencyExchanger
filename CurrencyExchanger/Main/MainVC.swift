@@ -45,7 +45,10 @@ public final class MainVC: UIViewController {
         self.title = "Currency Exchanger"
         self.setCurrencyPicker()        
         self.fetchCurrency()
-
+                
+        if let balanceVC = self.balanceVC {
+            self.addChildContentViewController(balanceVC)
+        }
     }
     
     // MARK: - Stored Properties
@@ -56,6 +59,7 @@ public final class MainVC: UIViewController {
     private var sellRowViewModel: SellRowViewModel = SellRowViewModel()
     private var receiveRowViewModel: ReceiveRowViewModel = ReceiveRowViewModel()
     private var disposeBag: DisposeBag!
+    public weak var balanceVC: BalanceVC?
 }
 
 // MARK: - UICollectionViewDataSource Methods
@@ -75,9 +79,11 @@ extension MainVC: UICollectionViewDataSource {
                 let cell = collectionView.dequeueReusableCell(
                     withReuseIdentifier: BalancesRow.identifier,
                     for: indexPath
-                ) as? BalancesRow
-            
+                ) as? BalancesRow,
+                let balanceVC = self.balanceVC
             else { return UICollectionViewCell() }
+            
+            cell.hostedView = balanceVC.rootView
             return cell
             
         case .sellRow:
@@ -155,6 +161,13 @@ extension MainVC {
         self.exchangeCurrencies = currencies
         self.rootView.sellCurrencyPicker.reloadAllComponents()
         self.rootView.receiveCurrencyPicker.reloadAllComponents()
+    }
+    
+    // MARK: - ChildViewControllers
+    
+    private func addChildContentViewController(_ childViewController: UIViewController) {
+        self.addChild(childViewController)
+        childViewController.didMove(toParent: self)
     }
 }
 

@@ -20,6 +20,29 @@ public class BalancesRow: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - HostedView
+    var hostedView: UIView? {
+        didSet {
+            guard let hostedView = hostedView else {
+                return
+            }
+            
+            hostedView.frame = contentView.bounds
+            contentView.addSubview(hostedView)
+        }
+    }
+    
+    public override func prepareForReuse() {
+        super.prepareForReuse()
+        if hostedView?.superview == contentView {
+           hostedView?.removeFromSuperview()
+        } else {
+           print("hostedView is no longer attached to this cell")
+        }
+
+        hostedView = nil
+    }
 }
 
 // MARK: - Public APIs
