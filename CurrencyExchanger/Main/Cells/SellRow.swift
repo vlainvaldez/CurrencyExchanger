@@ -120,7 +120,8 @@ extension SellRow {
     public static var identifier: String = "SellRow"
     
     public func configure(with viewModel: SellRowViewModel) {
-        self.viewModel = viewModel
+        self.viewModel = viewModel        
+        self.disposeBag = DisposeBag()
         self.amountTextField.rx.text.orEmpty
             .bind(to: viewModel.input.amount)
             .disposed(by: self.disposeBag)

@@ -19,16 +19,17 @@ public final class MainCoordinator: AbstractCoordinator {
     // MARK: - Stored Properties
     private let navigationController: UINavigationController
     private let currencyAPIService: CurrencyAPIService = CurrencyAPIService()
+    private let balanceViewModel: BalanceViewModel = BalanceViewModel()
     
     // MARK: - Instance Methods
     public override func start() {
         super.start()
         
-        let balanceCoordiantor: BalanceCoordinator = BalanceCoordinator()
+        let balanceCoordiantor: BalanceCoordinator = BalanceCoordinator(balanceModelView: self.balanceViewModel)
         balanceCoordiantor.start()
         let balanceVC = balanceCoordiantor.vc
         self.balanceVC = balanceVC
-        let vc: MainVC = MainVC()
+        let vc: MainVC = MainVC(balanceViewModel: self.balanceViewModel)
         vc.balanceVC = balanceVC
         vc.delegate = self
         self.navigationController.setViewControllers([vc], animated: true)

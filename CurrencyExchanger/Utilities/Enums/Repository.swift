@@ -72,7 +72,7 @@ public final class Repository {
         }
     }
     
-    func saveBalance(balances: [BalanceData]) -> Single<Void> {
+    func saveBalance(_ balances: [BalanceData]) -> Single<Void> {
         let disposable = Disposables.create()
         return Single<Void>.create { (single: @escaping (SingleEvent<()>) -> Void) -> Disposable in
             self.database.save(balances: balances) { (result: Result<Bool, Error>) -> Void in
@@ -106,17 +106,17 @@ public final class Repository {
         }
     }
     
-    func saveBalance(
-        balances: [BalanceData],
-        _ completion: @escaping ((Result<Bool, Error>) -> Void )) {
-        self.database.save(balances: balances) { (result: Result<Bool, Error>) -> Void in
-            switch result {
-            case .success(let success):
-                completion(.success(success))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
+//    func saveBalance(
+//        balances: [BalanceData],
+//        _ completion: @escaping ((Result<Bool, Error>) -> Void )) {
+//        self.database.save(balances: balances) { (result: Result<Bool, Error>) -> Void in
+//            switch result {
+//            case .success(let success):
+//                completion(.success(success))
+//            case .failure(let error):
+//                completion(.failure(error))
+//            }
+//        }
+//    }
     
 }

@@ -21,7 +21,8 @@ public final class MainVC: UIViewController {
     }
     
     // MARK: - Initializer
-    public init() {
+    public init(balanceViewModel: BalanceViewModel) {
+        self.balanceViewModel = balanceViewModel
         super.init(nibName: nil, bundle: nil)
         self.disposeBag = DisposeBag()
     }
@@ -47,13 +48,15 @@ public final class MainVC: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Currency Exchanger"
-        self.fetchCurrency()
-        self.setCurrencyPicker()
-        self.checkLaunchedBefore()
         
+        self.fetchCurrency()
         if let balanceVC = self.balanceVC {
             self.addChildContentViewController(balanceVC)
+            self.rootView.collectionView.reloadData()
         }
+        self.setCurrencyPicker()
+        self.checkLaunchedBefore()
+
     }
     
     // MARK: - Stored Properties
@@ -66,6 +69,7 @@ public final class MainVC: UIViewController {
     private var disposeBag: DisposeBag!
     public weak var balanceVC: BalanceVC?
     private let repository: Repository = Repository(database: Database())
+    private var balanceViewModel: BalanceViewModel
 }
 
 // MARK: - UICollectionViewDataSource Methods
@@ -175,43 +179,59 @@ extension MainVC {
         childViewController.didMove(toParent: self)
     }
     
+    private func removeChildContentViewController(_ childViewController: UIViewController) {
+        childViewController.removeFromParent()
+        childViewController.willMove(toParent: nil)
+    }
+    
     func saveCurrencies(_ currencies: [Currency]) {
         let balanceData: [BalanceData] = currencies.map{ BalanceData(currency: $0.symbol, value: 0.0) }
         HUD.show(HUDContentType.progress)
-        self.repository.saveBalance(balances: balanceData) { [weak self] (result: Result<Bool, Error>) in
-            switch result {
-            case .success:
-                HUD.hide()
-                guard
-                    let self = self
-                else { return }
-                self.delegate?.didLoad()
-            case .failure:
-                HUD.flash(HUDContentType.error)
-            }
-        }        
+        
+        self.repository.saveBalance(balances: balanceData)
+        .subscribe(onSuccess: { [weak self] (balanceData: [BalanceData]) -> Void in
+            guard let self = self else { return }
+            self.balanceViewModel.balance.onNext(balanceData)
+        }).disposed(by: self.disposeBag)
+        
+//        self.repository.saveBalance(balances: balanceData) { [weak self] (result: Result<Bool, Error>) in
+//            switch result {
+//            case .success:
+//                HUD.hide()
+//                guard
+//                    let self = self
+//                else { return }
+//                self.delegate?.didLoad()
+//            case .failure:
+//                HUD.flash(HUDContentType.error)
+//            }
+//        }
     }
     
     private func checkLaunchedBefore() {
         if !UserDefaults.standard.hasLaunchBefore  {
             let balanceData: BalanceData = BalanceData(currency: "EUR", value: 1000)
-            self.saveBalance(balanceData)
-            UserDefaults.standard.hasLaunchBefore = true
+            self.repository.saveBalance([balanceData]).subscribe(onSuccess: { _ in
+                UserDefaults.standard.hasLaunchBefore = true
+            }) { (error: Error) in
+                print(error.localizedDescription)
+            }.disposed(by: self.disposeBag)
+            
         }
     }
     
-    private func saveBalance(_ balanceData: BalanceData) {
-        HUD.show(HUDContentType.progress)
-        self.repository.saveBalance(balances: [balanceData]) { (result: Result<Bool, Error>) -> Void in
-            switch result {
-            case .success:
-                HUD.hide()
-                self.rootView.collectionView.reloadData()
-            case .failure:
-                HUD.flash(HUDContentType.error)
-            }
-        }
-    }
+//    private func saveBalance(_ balanceData: BalanceData) {
+//        HUD.show(HUDContentType.progress)
+//        self.repository.saveBalance(balances: [balanceData]) { (result: Result<Bool, Error>) -> Void in
+//            switch result {
+//            case .success:
+//                HUD.hide()
+//                self.rootView.collectionView.reloadData()
+//            case .failure:
+//                HUD.flash(HUDContentType.error)
+//            }
+//        }
+//    }
     
     private func currencyConvertAlert(
         convertedValue: Double,
@@ -235,24 +255,19 @@ extension MainVC {
             
             
             self.repository.getBalance(with: beforeCurrency)
-                .flatMap { (balanceDatum: BalanceData) -> Single<[BalanceData]> in
-                    let subtractedCommission: Double = balanceDatum.value - 0.70
-                    let totalValue = subtractedCommission - initialAmountValue
-                    let newBalance = BalanceData(currency: balanceDatum.currency, value: totalValue)
-                    return self.repository.saveBalance(balances: [newBalance])
-                }.flatMap { (balanceData: [BalanceData]) -> Single<Void> in
-                    let balanceData = BalanceData(currency: afterCurrency.symbol, value: convertedValue)
-                    return self.repository.saveBalance(balances: [balanceData])
-                }.subscribe(onSuccess: { [weak self] _ in
-                    guard
-                        let self = self,
-                        let balanceVC = self.balanceVC
-                    else { return }
-                    print("success")
-                    DispatchQueue.main.async {
-                        balanceVC.rootView.collectionView.reloadData()
-                    }
-                }).disposed(by: self.disposeBag)
+            .flatMap { (balanceDatum: BalanceData) -> Single<[BalanceData]> in
+                let subtractedCommission: Double = balanceDatum.value - 0.70
+                let totalValue = subtractedCommission - initialAmountValue
+                let newBalance = BalanceData(currency: balanceDatum.currency, value: totalValue)
+                return self.repository.saveBalance(balances: [newBalance])
+            }.flatMap { (balanceData: [BalanceData]) -> Single<[BalanceData]> in
+                let balanceData = BalanceData(currency: afterCurrency.symbol, value: convertedValue)
+                return self.repository.saveBalance(balances: [balanceData])
+            }.subscribe(onSuccess: { [weak self] (balanceData: [BalanceData]) in
+                guard let self = self else { return }
+                print("success")
+                self.balanceViewModel.balance.onNext(balanceData)                    
+            }).disposed(by: self.disposeBag)
 
 //            self.repository.getBalance(with: beforeCurrency) { (result: Result<BalanceData, Error>) -> Void in
 //                switch result {
