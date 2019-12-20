@@ -51,6 +51,10 @@
 		7C86FC7523AA630600A726BE /* BalanceVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C86FC7423AA630600A726BE /* BalanceVC.swift */; };
 		7C86FC7723AA631600A726BE /* BalanceCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C86FC7623AA631600A726BE /* BalanceCoordinator.swift */; };
 		7C86FC7A23AA6BEA00A726BE /* BalanceItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C86FC7923AA6BEA00A726BE /* BalanceItemRow.swift */; };
+		7C97A9F523AC7AAD00CFC3CF /* Balance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C97A9F423AC7AAD00CFC3CF /* Balance.swift */; };
+		7C97A9F823AC7BF000CFC3CF /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C97A9F723AC7BF000CFC3CF /* Database.swift */; };
+		7C97A9FA23AC7CB100CFC3CF /* BalanceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C97A9F923AC7CB100CFC3CF /* BalanceData.swift */; };
+		7C97A9FC23AC7EAC00CFC3CF /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C97A9FB23AC7EAC00CFC3CF /* Repository.swift */; };
 		E241B53CBB0FB772EB28918D /* Pods_CurrencyExchanger_CurrencyExchangerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F772CE9CB14D409B66950369 /* Pods_CurrencyExchanger_CurrencyExchangerUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -125,6 +129,10 @@
 		7C86FC7423AA630600A726BE /* BalanceVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceVC.swift; sourceTree = "<group>"; };
 		7C86FC7623AA631600A726BE /* BalanceCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceCoordinator.swift; sourceTree = "<group>"; };
 		7C86FC7923AA6BEA00A726BE /* BalanceItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceItemRow.swift; sourceTree = "<group>"; };
+		7C97A9F423AC7AAD00CFC3CF /* Balance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Balance.swift; sourceTree = "<group>"; };
+		7C97A9F723AC7BF000CFC3CF /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
+		7C97A9F923AC7CB100CFC3CF /* BalanceData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceData.swift; sourceTree = "<group>"; };
+		7C97A9FB23AC7EAC00CFC3CF /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
 		D079DE76353E2E6759ED2DD8 /* Pods-CurrencyExchanger.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CurrencyExchanger.release.xcconfig"; path = "Target Support Files/Pods-CurrencyExchanger/Pods-CurrencyExchanger.release.xcconfig"; sourceTree = "<group>"; };
 		E4AA9E720EAA1F5BA5333224 /* Pods-CurrencyExchanger.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CurrencyExchanger.debug.xcconfig"; path = "Target Support Files/Pods-CurrencyExchanger/Pods-CurrencyExchanger.debug.xcconfig"; sourceTree = "<group>"; };
 		F377BFC939346CDB4358B957 /* Pods-CurrencyExchanger-CurrencyExchangerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CurrencyExchanger-CurrencyExchangerUITests.release.xcconfig"; path = "Target Support Files/Pods-CurrencyExchanger-CurrencyExchangerUITests/Pods-CurrencyExchanger-CurrencyExchangerUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -310,6 +318,7 @@
 			isa = PBXGroup;
 			children = (
 				7C83C0C923A34DFC002B667A /* AppUI.swift */,
+				7C97A9FB23AC7EAC00CFC3CF /* Repository.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -365,8 +374,10 @@
 		7C83C0E223A3ECF1002B667A /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				7C97A9F323AC7A9D00CFC3CF /* Realm */,
 				7C83C0E323A3ED0E002B667A /* Exchange.swift */,
 				7C83C0E523A49AB3002B667A /* Currency.swift */,
+				7C97A9F923AC7CB100CFC3CF /* BalanceData.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -374,6 +385,7 @@
 		7C83C0EA23A73A18002B667A /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				7C97A9F623AC7BDC00CFC3CF /* Realm */,
 				7C83C0EB23A73A34002B667A /* TextField.swift */,
 			);
 			path = Classes;
@@ -405,6 +417,22 @@
 				7C86FC7923AA6BEA00A726BE /* BalanceItemRow.swift */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		7C97A9F323AC7A9D00CFC3CF /* Realm */ = {
+			isa = PBXGroup;
+			children = (
+				7C97A9F423AC7AAD00CFC3CF /* Balance.swift */,
+			);
+			path = Realm;
+			sourceTree = "<group>";
+		};
+		7C97A9F623AC7BDC00CFC3CF /* Realm */ = {
+			isa = PBXGroup;
+			children = (
+				7C97A9F723AC7BF000CFC3CF /* Database.swift */,
+			);
+			path = Realm;
 			sourceTree = "<group>";
 		};
 		BA037D3810C1550A084BA89A /* Pods */ = {
@@ -673,6 +701,7 @@
 				7C83C0CF23A34F82002B667A /* SellRow.swift in Sources */,
 				7C83C0D623A3569F002B667A /* MainRows.swift in Sources */,
 				7C83C0F123A74950002B667A /* SellRowViewModel.swift in Sources */,
+				7C97A9FC23AC7EAC00CFC3CF /* Repository.swift in Sources */,
 				7C7789F7239CF2D100B5E838 /* AbstractCoordinator.swift in Sources */,
 				7C86FC7723AA631600A726BE /* BalanceCoordinator.swift in Sources */,
 				7C83C0DE23A3E8B9002B667A /* CurrencyRequest.swift in Sources */,
@@ -693,6 +722,8 @@
 				7C7789FC239CF3FB00B5E838 /* Coordinator.swift in Sources */,
 				7C83C0E423A3ED0E002B667A /* Exchange.swift in Sources */,
 				7C778A09239CF7F500B5E838 /* MainCoordinator.swift in Sources */,
+				7C97A9F823AC7BF000CFC3CF /* Database.swift in Sources */,
+				7C97A9F523AC7AAD00CFC3CF /* Balance.swift in Sources */,
 				7C83C0EC23A73A34002B667A /* TextField.swift in Sources */,
 				7C83C0E123A3E9FB002B667A /* CurrencyAPIService.swift in Sources */,
 				7C83C0D123A34FC7002B667A /* BalancesRow.swift in Sources */,
@@ -703,6 +734,7 @@
 				7C7789FE239CF41E00B5E838 /* TabBarCoordinator.swift in Sources */,
 				7C778A0E239CFE5000B5E838 /* AppMainCoordinator.swift in Sources */,
 				7C83C0CA23A34DFC002B667A /* AppUI.swift in Sources */,
+				7C97A9FA23AC7CB100CFC3CF /* BalanceData.swift in Sources */,
 				7C094FCC23994BF700B78FD7 /* SceneDelegate.swift in Sources */,
 				7C7789FA239CF3D100B5E838 /* AnyTabCoordinator.swift in Sources */,
 				7C83C0DB23A3D1C7002B667A /* SellRowDelegate.swift in Sources */,
