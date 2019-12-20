@@ -262,7 +262,13 @@ extension MainVC {
             guard let self = self else { return }
             HUD.hide()
             self.exchange = exchange
-            let currencies = exchange.rates.map { Currency(symbol: $0.key, rate: $0.value) }
+            let currencies = exchange.rates
+                .map { Currency(symbol: $0.key, rate: $0.value) }
+                .sorted(
+                    by: { (currency1: Currency, currency2: Currency) -> Bool in
+                        return currency1.symbol.lowercased() < currency2.symbol.lowercased()
+                    }
+                )
             self.setPickerValues(currencies: currencies)
             self.saveCurrencies(currencies)
         }
