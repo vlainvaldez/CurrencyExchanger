@@ -35,6 +35,8 @@ public final class MainCoordinator: AbstractCoordinator {
         self.add(childCoordinator: balanceCoordiantor)
     }
     
+    // MARK: - Stored Properties
+    private var balanceVC: BalanceVC?
 }
 
 // MARK: - MainVCDelegate Methods
