@@ -22,7 +22,7 @@ public class SellRowViewModel: InputOutputViewModel {
     
     public struct Output {
         let amount: BehaviorRelay<String> = BehaviorRelay<String>(value: "")
-        var currency: Currency = Currency(symbol: "--", rate: 0.0)
+        var currency: Currency = Currency(symbol: "EUR", rate: 0.0)
     }
     
     private let amountSubject = PublishSubject<String>()

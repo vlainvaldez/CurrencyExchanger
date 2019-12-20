@@ -10,4 +10,5 @@ import Foundation
 
 public protocol MainVCDelegate: class {
     func getCurrency(completion: @escaping (Exchange) -> Void )
+    func didLoad()
 }

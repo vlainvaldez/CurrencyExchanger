@@ -14,11 +14,16 @@ import RxSwift
 public final class MainVC: UIViewController {
     
     // MARK: Delegate Declarations
-    public weak var delegate: MainVCDelegate?
+    public weak var delegate: MainVCDelegate? {
+        didSet{
+            print("DELEGATE SET")
+        }
+    }
     
     // MARK: - Initializer
     public init() {
         super.init(nibName: nil, bundle: nil)
+        self.disposeBag = DisposeBag()
     }
     
     public required init?(coder: NSCoder) {
@@ -28,7 +33,6 @@ public final class MainVC: UIViewController {
     // MARK: - Deinitializer
     deinit {
         print("\(type(of: self)) was deallocated")
-        self.disposeBag = nil
     }
     
     // MARK: - LifeCycle Methods
@@ -43,8 +47,8 @@ public final class MainVC: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Currency Exchanger"
-        self.setCurrencyPicker()        
         self.fetchCurrency()
+        self.setCurrencyPicker()
         self.checkLaunchedBefore()
         
         if let balanceVC = self.balanceVC {
@@ -174,31 +178,95 @@ extension MainVC {
     func saveCurrencies(_ currencies: [Currency]) {
         let balanceData: [BalanceData] = currencies.map{ BalanceData(currency: $0.symbol, value: 0.0) }
         HUD.show(HUDContentType.progress)
-        self.repository.saveBalance(balances: balanceData) { (result: Result<Bool, Error>) in
+        self.repository.saveBalance(balances: balanceData) { [weak self] (result: Result<Bool, Error>) in
             switch result {
             case .success:
                 HUD.hide()
+                guard
+                    let self = self
+                else { return }
+                self.delegate?.didLoad()
+            case .failure:
+                HUD.flash(HUDContentType.error)
+            }
+        }        
+    }
+    
+    private func checkLaunchedBefore() {
+        if !UserDefaults.standard.hasLaunchBefore  {
+            let balanceData: BalanceData = BalanceData(currency: "EUR", value: 1000)
+            self.saveBalance(balanceData)
+            UserDefaults.standard.hasLaunchBefore = true
+        }
+    }
+    
+    private func saveBalance(_ balanceData: BalanceData) {
+        HUD.show(HUDContentType.progress)
+        self.repository.saveBalance(balances: [balanceData]) { (result: Result<Bool, Error>) -> Void in
+            switch result {
+            case .success:
+                HUD.hide()
+                self.rootView.collectionView.reloadData()
             case .failure:
                 HUD.flash(HUDContentType.error)
             }
         }
     }
     
-    private func checkLaunchedBefore() {
-        if !UserDefaults.standard.hasLaunchBefore  {
-            let balanceData: BalanceData = BalanceData(currency: "EUR", value: 1000)
-            HUD.show(HUDContentType.progress)
-            self.repository.saveBalance(balances: [balanceData]) { (result: Result<Bool, Error>) -> Void in
-                switch result {
-                case .success:
-                    HUD.hide()
-                    self.rootView.collectionView.reloadData()
-                case .failure:
-                    HUD.flash(HUDContentType.error)
-                }
-            }
-            UserDefaults.standard.hasLaunchBefore = true
-        }
+    private func currencyConvertAlert(
+        convertedValue: Double,
+        initialAmountValue: Double,
+        from beforeCurrency: Currency,
+        to afterCurrency: Currency) {
+        
+        let alert = UIAlertController(
+            title: "Currency Converted",
+            message: """
+                    \n
+                    You have converted \(initialAmountValue) \(beforeCurrency.symbol) to
+                    \(convertedValue) \(afterCurrency.symbol). Commission Fee - 0.70 EUR
+                    """,
+            preferredStyle: .alert
+        )        
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "OK", style: .default) { [weak self] (alertAction: UIAlertAction) -> Void in
+            guard let self = self else { return }
+            
+            
+            self.repository.getBalance(with: beforeCurrency)
+                .flatMap { (balanceDatum: BalanceData) -> Single<[BalanceData]> in
+                    let subtractedCommission: Double = balanceDatum.value - 0.70
+                    let totalValue = subtractedCommission - initialAmountValue
+                    let newBalance = BalanceData(currency: balanceDatum.currency, value: totalValue)
+                    return self.repository.saveBalance(balances: [newBalance])
+                }.flatMap { (balanceData: [BalanceData]) -> Single<Void> in
+                    let balanceData = BalanceData(currency: afterCurrency.symbol, value: convertedValue)
+                    return self.repository.saveBalance(balances: [balanceData])
+                }.subscribe(onSuccess: { [weak self] _ in
+                    guard
+                        let self = self,
+                        let balanceVC = self.balanceVC
+                    else { return }
+                    print("success")
+                    DispatchQueue.main.async {
+                        balanceVC.rootView.collectionView.reloadData()
+                    }
+                }).disposed(by: self.disposeBag)
+
+//            self.repository.getBalance(with: beforeCurrency) { (result: Result<BalanceData, Error>) -> Void in
+//                switch result {
+//                case .success(let balanceData):
+//                    print("\(balanceData.currency) \(balanceData.value)")
+//                case .failure:
+//                    HUD.flash(HUDContentType.error)
+//                }
+//            }
+            
+//            self.saveBalance(balanceData)
+        })
+        
+        self.present(alert,animated: true, completion: nil )
     }
 }
 
@@ -258,16 +326,24 @@ extension MainVC: SubmitRowDelegate {
     public func submitTapped() {
         
         guard
-            let receiveCurrency = self.receiveRowViewModel.output.currency
+            let receiveCurrency = self.receiveRowViewModel.output.currency,
+            let initialAmountValue: Double = Double(self.sellRowViewModel.output.amount.value)
         else { return }
 
-        let computation = Double(self.sellRowViewModel.output.amount.value)! * Double(receiveCurrency.rate)
+        let computation = initialAmountValue * Double(receiveCurrency.rate)
         let computationWithCommission = computation - 0.70
         let roundedValue = computationWithCommission.roundTo(places: 2)
         
         print("value: \(computation)")
         print("value with commision: \(computationWithCommission)")
         print("Rounded Value: \(roundedValue)")
+        
+        self.currencyConvertAlert(
+            convertedValue: roundedValue,
+            initialAmountValue: initialAmountValue,
+            from: self.sellRowViewModel.output.currency,
+            to: receiveCurrency
+        )
     }
 }
 

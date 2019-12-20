@@ -8,12 +8,15 @@
 
 import UIKit
 import PKHUD
+import RxCocoa
+import RxSwift
 
 public class BalanceVC: UIViewController {
     
     // MARK: - Initializer
     public init() {
         super.init(nibName: nil, bundle: nil)
+        self.disposeBag = DisposeBag()
     }
     
     required init?(coder: NSCoder) {
@@ -23,6 +26,7 @@ public class BalanceVC: UIViewController {
     // MARK: - Deinitializer
     deinit {
         print("\(type(of: self)) was deallocated")
+        self.disposeBag = nil
     }
     
     // MARK: - Life Cycle Methods
@@ -37,12 +41,17 @@ public class BalanceVC: UIViewController {
         self.cellsRegistration()
         self.balanceCollectionView.dataSource = self
         self.balanceCollectionView.delegate = self
-        self.updateDataSource()
+        
+        
+        self.repository.getObservableBalances().subscribe(onNext: { (balance: BalanceData) in
+            self.updateDataSource()
+        }).disposed(by: self.disposeBag)
     }
     
     // MARK: - Stored Properties
     private let repository: Repository = Repository(database: Database())
     private var dataSource: [BalanceData] = [BalanceData]()
+    private var disposeBag: DisposeBag!
 }
 
 // MARK: - Views
@@ -62,33 +71,37 @@ extension BalanceVC {
     
     private func updateDataSource() {
         HUD.show(HUDContentType.progress)
-        
-        self.repository.getBalances { (result: Result<[BalanceData], Error>) -> Void in
-            switch result {
-            case .success(let balanceData):
-                HUD.hide()
-                self.dataSource = balanceData.sorted(
-                    by: { (balance1: BalanceData, balance2: BalanceData) -> Bool in
-                        return balance1.currency.lowercased() < balance2.currency.lowercased()
-                    }
-                )
 
-                if let eurCurrencyIndex = self.dataSource.firstIndex(where: { $0.currency == "EUR" }) {
-                    self.dataSource = Util.rearrange(
-                        array: self.dataSource,
-                        fromIndex: eurCurrencyIndex,
-                        toIndex: 0
-                    )
+        self.repository.getBalances()
+        .do(onSuccess: { [weak self] (balanceData: [BalanceData]) in
+            guard let self = self else { return }
+            HUD.hide()
+            self.dataSource = balanceData.sorted(
+                by: { (balance1: BalanceData, balance2: BalanceData) -> Bool in
+                    return balance1.currency.lowercased() < balance2.currency.lowercased()
                 }
-                
-                self.rootView.collectionView.reloadData()
-            case .failure(let error):
-                HUD.flash(HUDContentType.labeledError(
-                    title: nil,
-                    subtitle: error.localizedDescription
-                ))
+            )
+
+            if let eurCurrencyIndex = self.dataSource.firstIndex(where: { $0.currency == "EUR" }) {
+                self.dataSource = Util.rearrange(
+                    array: self.dataSource,
+                    fromIndex: eurCurrencyIndex,
+                    toIndex: 0
+                )
             }
-        }
+        }).subscribe(onSuccess: { [weak self] (balanceData: [BalanceData]) -> Void in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.rootView.collectionView.reloadData()
+            }
+            
+        }) { (error: Error) in
+            HUD.flash(HUDContentType.labeledError(
+                title: nil,
+                subtitle: error.localizedDescription
+            ))
+        }.disposed(by: self.disposeBag)
+        
     }
 }
 

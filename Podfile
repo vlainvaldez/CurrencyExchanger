@@ -10,9 +10,10 @@ target 'CurrencyExchanger' do
   pod 'Moya', '~> 13.0'
   pod 'Kingfisher'
   pod 'PKHUD', '~> 5.0'
-  pod 'RealmSwift'
-  pod 'RxSwift', '4.4.1'
-  pod 'RxCocoa', '4.4.1'
+  pod 'RxSwift', '5.0'
+  pod 'RxCocoa', '5.0'
+  pod 'RealmSwift', '4.0'
+  pod 'RxRealm'
 
   target 'CurrencyExchangerTests' do
     inherit! :search_paths

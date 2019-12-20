@@ -8,6 +8,8 @@
 
 import Foundation
 import RealmSwift
+import RxRealm
+import RxSwift
 
 public final class Database {
     
@@ -16,9 +18,9 @@ public final class Database {
         case fetchingError
     }
     
+    private var queue = DispatchQueue(label: "database.queue", attributes: .concurrent)
     
-    func save(balances: [BalanceData]) throws {
-        
+    func save(balances: [BalanceData], _ completion: @escaping ((Result<Bool, Error>) -> Void )) {
         do {
             let realm = try Realm()
             try realm.write {
@@ -30,9 +32,11 @@ public final class Database {
                     realm.add(object, update: Realm.UpdatePolicy.modified)
                 }
             }
+            completion(.success(true))
         } catch  {
-            throw DatabaseError.savingError
+            completion(.failure(error))
         }
+        
     }
     
     func get() throws -> [BalanceData] {        
@@ -42,10 +46,38 @@ public final class Database {
             return realm.objects(Balance.self).map { (balance: Balance) -> BalanceData in
                 return BalanceData(currency: balance.currency, value: balance.value)
             }
+            
         } catch {
             throw DatabaseError.fetchingError
         }
-        
     }
     
+    func getObservableObjects() -> Observable<Balance> {
+        do {
+            let realm = try Realm()
+            
+            let balanceObjects = realm.objects(Balance.self)
+                
+            return Observable.from(balanceObjects)
+            
+        } catch {
+            return Observable.from([Balance]())
+        }
+    }
+    
+    func get(with currency: String) throws -> BalanceData {
+        do {
+            let realm = try Realm()
+            
+            if let fetchResult = realm.objects(Balance.self).filter("currency = '\(currency)'" ).first {
+                return BalanceData(currency: fetchResult.currency, value: fetchResult.value)                
+            } else {
+                throw DatabaseError.fetchingError
+            }
+            
+        } catch {
+            throw DatabaseError.fetchingError
+        }
+    }
+
 }

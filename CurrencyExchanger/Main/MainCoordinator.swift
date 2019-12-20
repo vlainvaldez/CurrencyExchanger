@@ -27,7 +27,7 @@ public final class MainCoordinator: AbstractCoordinator {
         let balanceCoordiantor: BalanceCoordinator = BalanceCoordinator()
         balanceCoordiantor.start()
         let balanceVC = balanceCoordiantor.vc
-        
+        self.balanceVC = balanceVC
         let vc: MainVC = MainVC()
         vc.balanceVC = balanceVC
         vc.delegate = self
@@ -42,6 +42,11 @@ public final class MainCoordinator: AbstractCoordinator {
 
 // MARK: - MainVCDelegate Methods
 extension MainCoordinator: MainVCDelegate {
+    
+    public func didLoad() {
+//        guard let balanceVC = self.balanceVC else { return }
+//        balanceVC.rootView.collectionView.reloadData()
+    }
     
     public func getCurrency(completion: @escaping (Exchange) -> Void) {
         self.currencyAPIService.getTracks { (exchange: Exchange) -> Void in
