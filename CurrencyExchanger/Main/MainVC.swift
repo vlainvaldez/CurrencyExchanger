@@ -45,7 +45,8 @@ public final class MainVC: UIViewController {
         self.title = "Currency Exchanger"
         self.setCurrencyPicker()        
         self.fetchCurrency()
-                
+        self.checkLaunchedBefore()
+        
         if let balanceVC = self.balanceVC {
             self.addChildContentViewController(balanceVC)
         }
@@ -158,7 +159,7 @@ extension MainVC {
         self.rootView.receiveCurrencyPicker.delegate = self
     }
     
-    private func setPickerValues(currencies: [Currency] ) {
+    private func setPickerValues(currencies: [Currency] ) {        
         self.exchangeCurrencies = currencies
         self.rootView.sellCurrencyPicker.reloadAllComponents()
         self.rootView.receiveCurrencyPicker.reloadAllComponents()
@@ -180,6 +181,23 @@ extension MainVC {
             case .failure:
                 HUD.flash(HUDContentType.error)
             }
+        }
+    }
+    
+    private func checkLaunchedBefore() {
+        if !UserDefaults.standard.hasLaunchBefore  {
+            let balanceData: BalanceData = BalanceData(currency: "EUR", value: 1000)
+            HUD.show(HUDContentType.progress)
+            self.repository.saveBalance(balances: [balanceData]) { (result: Result<Bool, Error>) -> Void in
+                switch result {
+                case .success:
+                    HUD.hide()
+                    self.rootView.collectionView.reloadData()
+                case .failure:
+                    HUD.flash(HUDContentType.error)
+                }
+            }
+            UserDefaults.standard.hasLaunchBefore = true
         }
     }
 }
@@ -269,6 +287,7 @@ extension MainVC {
                         return currency1.symbol.lowercased() < currency2.symbol.lowercased()
                     }
                 )
+
             self.setPickerValues(currencies: currencies)
             self.saveCurrencies(currencies)
         }

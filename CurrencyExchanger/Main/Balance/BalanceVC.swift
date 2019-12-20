@@ -72,6 +72,14 @@ extension BalanceVC {
                         return balance1.currency.lowercased() < balance2.currency.lowercased()
                     }
                 )
+
+                if let eurCurrencyIndex = self.dataSource.firstIndex(where: { $0.currency == "EUR" }) {
+                    self.dataSource = Util.rearrange(
+                        array: self.dataSource,
+                        fromIndex: eurCurrencyIndex,
+                        toIndex: 0
+                    )
+                }
                 
                 self.rootView.collectionView.reloadData()
             case .failure(let error):

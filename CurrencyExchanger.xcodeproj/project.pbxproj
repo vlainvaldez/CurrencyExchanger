@@ -55,6 +55,8 @@
 		7C97A9F823AC7BF000CFC3CF /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C97A9F723AC7BF000CFC3CF /* Database.swift */; };
 		7C97A9FA23AC7CB100CFC3CF /* BalanceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C97A9F923AC7CB100CFC3CF /* BalanceData.swift */; };
 		7C97A9FC23AC7EAC00CFC3CF /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C97A9FB23AC7EAC00CFC3CF /* Repository.swift */; };
+		7C97A9FE23ACF4CB00CFC3CF /* UserDefaults+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C97A9FD23ACF4CB00CFC3CF /* UserDefaults+Extensions.swift */; };
+		7C97AA0023ACF81E00CFC3CF /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C97A9FF23ACF81E00CFC3CF /* Util.swift */; };
 		E241B53CBB0FB772EB28918D /* Pods_CurrencyExchanger_CurrencyExchangerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F772CE9CB14D409B66950369 /* Pods_CurrencyExchanger_CurrencyExchangerUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -133,6 +135,8 @@
 		7C97A9F723AC7BF000CFC3CF /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		7C97A9F923AC7CB100CFC3CF /* BalanceData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceData.swift; sourceTree = "<group>"; };
 		7C97A9FB23AC7EAC00CFC3CF /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
+		7C97A9FD23ACF4CB00CFC3CF /* UserDefaults+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Extensions.swift"; sourceTree = "<group>"; };
+		7C97A9FF23ACF81E00CFC3CF /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		D079DE76353E2E6759ED2DD8 /* Pods-CurrencyExchanger.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CurrencyExchanger.release.xcconfig"; path = "Target Support Files/Pods-CurrencyExchanger/Pods-CurrencyExchanger.release.xcconfig"; sourceTree = "<group>"; };
 		E4AA9E720EAA1F5BA5333224 /* Pods-CurrencyExchanger.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CurrencyExchanger.debug.xcconfig"; path = "Target Support Files/Pods-CurrencyExchanger/Pods-CurrencyExchanger.debug.xcconfig"; sourceTree = "<group>"; };
 		F377BFC939346CDB4358B957 /* Pods-CurrencyExchanger-CurrencyExchangerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CurrencyExchanger-CurrencyExchangerUITests.release.xcconfig"; path = "Target Support Files/Pods-CurrencyExchanger-CurrencyExchangerUITests/Pods-CurrencyExchanger-CurrencyExchangerUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -310,6 +314,7 @@
 				7C83C0C723A34ABB002B667A /* UIView+Extensions.swift */,
 				7C83C0D723A3A875002B667A /* String+Extensions.swift */,
 				7C86FC6B23A782F600A726BE /* Double+Extensions.swift */,
+				7C97A9FD23ACF4CB00CFC3CF /* UserDefaults+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -387,6 +392,7 @@
 			children = (
 				7C97A9F623AC7BDC00CFC3CF /* Realm */,
 				7C83C0EB23A73A34002B667A /* TextField.swift */,
+				7C97A9FF23ACF81E00CFC3CF /* Util.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -701,6 +707,7 @@
 				7C83C0CF23A34F82002B667A /* SellRow.swift in Sources */,
 				7C83C0D623A3569F002B667A /* MainRows.swift in Sources */,
 				7C83C0F123A74950002B667A /* SellRowViewModel.swift in Sources */,
+				7C97A9FE23ACF4CB00CFC3CF /* UserDefaults+Extensions.swift in Sources */,
 				7C97A9FC23AC7EAC00CFC3CF /* Repository.swift in Sources */,
 				7C7789F7239CF2D100B5E838 /* AbstractCoordinator.swift in Sources */,
 				7C86FC7723AA631600A726BE /* BalanceCoordinator.swift in Sources */,
@@ -728,6 +735,7 @@
 				7C83C0E123A3E9FB002B667A /* CurrencyAPIService.swift in Sources */,
 				7C83C0D123A34FC7002B667A /* BalancesRow.swift in Sources */,
 				7C83C0E823A49C66002B667A /* PickerType.swift in Sources */,
+				7C97AA0023ACF81E00CFC3CF /* Util.swift in Sources */,
 				7C778A05239CF7D200B5E838 /* MainVC.swift in Sources */,
 				7C83C0CD23A34F55002B667A /* ReceiveRow.swift in Sources */,
 				7C86FC6A23A76BFC00A726BE /* SubmitRowDelegate.swift in Sources */,

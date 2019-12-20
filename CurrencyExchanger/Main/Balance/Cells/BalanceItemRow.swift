@@ -42,7 +42,7 @@ public class BalanceItemRow: UICollectionViewCell {
         ])
         
         self.currencyLabel.snp.remakeConstraints { (make: ConstraintMaker) -> Void in
-            make.top.equalToSuperview().offset(10.0)
+            make.top.equalToSuperview().offset(20.0)
             make.centerX.equalToSuperview()
         }
         
