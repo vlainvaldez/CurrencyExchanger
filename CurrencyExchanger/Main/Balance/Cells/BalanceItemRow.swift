@@ -62,5 +62,10 @@ public class BalanceItemRow: UICollectionViewCell {
 // MARK: - Public APIs
 extension BalanceItemRow {
     public static var identifier: String = "BalanceItemRow"
+    
+    public func configure(with balanceData: BalanceData) {
+        self.currencyLabel.text = balanceData.currency
+        self.amountLabel.text = "\(balanceData.value)"
+    }
 }
 

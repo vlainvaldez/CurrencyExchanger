@@ -19,6 +19,7 @@ public final class MainCoordinator: AbstractCoordinator {
     // MARK: - Stored Properties
     private let navigationController: UINavigationController
     private let currencyAPIService: CurrencyAPIService = CurrencyAPIService()
+    
     // MARK: - Instance Methods
     public override func start() {
         super.start()

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PKHUD
 
 public class BalanceVC: UIViewController {
     
@@ -36,8 +37,12 @@ public class BalanceVC: UIViewController {
         self.cellsRegistration()
         self.balanceCollectionView.dataSource = self
         self.balanceCollectionView.delegate = self
+        self.updateDataSource()
     }
-
+    
+    // MARK: - Stored Properties
+    private let repository: Repository = Repository(database: Database())
+    private var dataSource: [BalanceData] = [BalanceData]()
 }
 
 // MARK: - Views
@@ -54,13 +59,36 @@ extension BalanceVC {
             forCellWithReuseIdentifier: BalanceItemRow.identifier
         )
     }
+    
+    private func updateDataSource() {
+        HUD.show(HUDContentType.progress)
+        
+        self.repository.getBalances { (result: Result<[BalanceData], Error>) -> Void in
+            switch result {
+            case .success(let balanceData):
+                HUD.hide()
+                self.dataSource = balanceData.sorted(
+                    by: { (balance1: BalanceData, balance2: BalanceData) -> Bool in
+                        return balance1.currency.lowercased() < balance2.currency.lowercased()
+                    }
+                )
+                
+                self.rootView.collectionView.reloadData()
+            case .failure(let error):
+                HUD.flash(HUDContentType.labeledError(
+                    title: nil,
+                    subtitle: error.localizedDescription
+                ))
+            }
+        }
+    }
 }
 
 // MARK: - UICollectionViewDataSource Methods
 extension BalanceVC: UICollectionViewDataSource {
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return self.dataSource.count
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -71,6 +99,8 @@ extension BalanceVC: UICollectionViewDataSource {
             ) as? BalanceItemRow
         else { return UICollectionViewCell() }
         
+        let balanceData = self.dataSource[indexPath.item]
+        cell.configure(with: balanceData)
         return cell
     }
 }

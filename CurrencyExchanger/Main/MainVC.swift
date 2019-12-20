@@ -60,6 +60,7 @@ public final class MainVC: UIViewController {
     private var receiveRowViewModel: ReceiveRowViewModel = ReceiveRowViewModel()
     private var disposeBag: DisposeBag!
     public weak var balanceVC: BalanceVC?
+    private let repository: Repository = Repository(database: Database())
 }
 
 // MARK: - UICollectionViewDataSource Methods
@@ -164,10 +165,22 @@ extension MainVC {
     }
     
     // MARK: - ChildViewControllers
-    
     private func addChildContentViewController(_ childViewController: UIViewController) {
         self.addChild(childViewController)
         childViewController.didMove(toParent: self)
+    }
+    
+    func saveCurrencies(_ currencies: [Currency]) {
+        let balanceData: [BalanceData] = currencies.map{ BalanceData(currency: $0.symbol, value: 0.0) }
+        HUD.show(HUDContentType.progress)
+        self.repository.saveBalance(balances: balanceData) { (result: Result<Bool, Error>) in
+            switch result {
+            case .success:
+                HUD.hide()
+            case .failure:
+                HUD.flash(HUDContentType.error)
+            }
+        }
     }
 }
 
@@ -222,7 +235,7 @@ extension MainVC: ReceiveRowDelegate {
     }
 }
 
-// MARK: -
+// MARK: - SubmitRowDelegate Methods
 extension MainVC: SubmitRowDelegate {
     public func submitTapped() {
         
@@ -251,6 +264,7 @@ extension MainVC {
             self.exchange = exchange
             let currencies = exchange.rates.map { Currency(symbol: $0.key, rate: $0.value) }
             self.setPickerValues(currencies: currencies)
+            self.saveCurrencies(currencies)
         }
     }
     
