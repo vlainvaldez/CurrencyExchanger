@@ -25,7 +25,7 @@ public class BalanceItemRow: UICollectionViewCell {
     public lazy var amountLabel: UILabel = {
         let view: UILabel = UILabel()
         view.textColor = UIColor.white
-        view.text = "100,0000000000000000"
+        view.text = "1000.00"
         view.textAlignment = .center
         view.font = UIFont.systemFont(ofSize: 15.0, weight: UIFont.Weight.bold)
         view.sizeToFit()

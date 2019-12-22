@@ -44,11 +44,6 @@ public final class MainCoordinator: AbstractCoordinator {
 // MARK: - MainVCDelegate Methods
 extension MainCoordinator: MainVCDelegate {
     
-    public func didLoad() {
-//        guard let balanceVC = self.balanceVC else { return }
-//        balanceVC.rootView.collectionView.reloadData()
-    }
-    
     public func getCurrency(completion: @escaping (Exchange) -> Void) {
         self.currencyAPIService.getTracks { (exchange: Exchange) -> Void in
             completion(exchange)

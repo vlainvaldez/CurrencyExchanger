@@ -16,7 +16,7 @@ public final class MainVC: UIViewController {
     // MARK: Delegate Declarations
     public weak var delegate: MainVCDelegate? {
         didSet{
-            print("DELEGATE SET")
+            print("DELEGATE IS SET")
         }
     }
     
@@ -252,8 +252,7 @@ extension MainVC {
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "OK", style: .default) { [weak self] (alertAction: UIAlertAction) -> Void in
             guard let self = self else { return }
-            
-            
+
             self.repository.getBalance(with: beforeCurrency)
             .flatMap { (balanceDatum: BalanceData) -> Single<[BalanceData]> in
                 let subtractedCommission: Double = balanceDatum.value - 0.70
@@ -266,7 +265,7 @@ extension MainVC {
             }.subscribe(onSuccess: { [weak self] (balanceData: [BalanceData]) in
                 guard let self = self else { return }
                 print("success")
-                self.balanceViewModel.balance.onNext(balanceData)                    
+                self.balanceViewModel.balance.onNext(balanceData)
             }).disposed(by: self.disposeBag)
 
 //            self.repository.getBalance(with: beforeCurrency) { (result: Result<BalanceData, Error>) -> Void in
