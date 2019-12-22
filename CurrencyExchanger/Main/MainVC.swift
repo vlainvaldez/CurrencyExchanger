@@ -188,6 +188,9 @@ extension MainVC {
         childViewController.willMove(toParent: nil)
     }
     
+    
+    /// Save Currencies to the Local Database
+    /// - Parameter currencies: Array of "Currency" Object
     func saveCurrencies(_ currencies: [Currency]) {
         let balanceData: [BalanceData] = currencies.map {
             BalanceData(currency: $0.symbol, value: 0.0)
@@ -195,11 +198,41 @@ extension MainVC {
         self.balanceViewModel.saveCurrencies(balanceData)
     }
     
+    /// Saving A Default Balance for Convertion
     private func checkLaunchedBefore() {
         if !UserDefaults.standard.hasLaunchBefore  {
-            let balanceData: BalanceData = BalanceData(currency: "EUR", value: 1000)
-            self.repository.saveBalance([balanceData]).subscribe().disposed(by: self.disposeBag)
+            self.balanceViewModel.saveDefaultBalance()
         }
+    }
+    
+    /// Save Converted Currency to the Local Database
+    /// - Parameter convertedValue: Value after Convertion to Other "Currency"
+    /// - Parameter initialAmountValue: Value before Convertion to Other "Currency"
+    /// - Parameter beforeCurrency: Currency of the initialAmountValue about to convert
+    /// - Parameter afterCurrency: Currency of the Converted value
+    private func saveConvertedCurrency(
+        convertedValue: Double,
+        initialAmountValue: Double,
+        from beforeCurrency: Currency,
+        to afterCurrency: Currency) {
+        
+        self.balanceViewModel.saveBalance(
+            convertedValue: convertedValue,
+            initialAmountValue: initialAmountValue,
+            from: beforeCurrency,
+            to: afterCurrency)
+        .subscribe(
+            onNext: { [weak self] (balanceData: [BalanceData]) in
+                guard let self = self else { return}
+                self.balanceViewModel.balance.onNext(balanceData)
+                let doubleReceiveAmount = Double(convertedValue).roundTo(places: 2)
+                self.receiveRowViewModel.input.amount.onNext("\(doubleReceiveAmount)")
+            },
+            onError: { [weak self] (error: Error) in
+                guard let self = self else { return}
+                self.showErrorAlert(with: error)
+            }
+        ).disposed(by: self.disposeBag)
     }
     
     private func currencyConvertAlert(
@@ -221,45 +254,25 @@ extension MainVC {
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "OK", style: .default) { [weak self] (alertAction: UIAlertAction) -> Void in
             guard let self = self else { return }
-
-            self.repository.getBalance(with: beforeCurrency)
-            .flatMap { (balanceDatum: BalanceData) -> Single<[BalanceData]> in
-                
-                let subtractedCommission: Double = balanceDatum.value - 0.70
-                let totalValue = subtractedCommission - initialAmountValue
-                let newBalance = BalanceData(
-                    currency: balanceDatum.currency,
-                    value: totalValue.roundTo(places: 2)
-                )
-                return self.repository.saveBalance(balances: [newBalance])
-                
-            }.flatMap { (balanceData: [BalanceData]) -> Single<[BalanceData]> in
-                                
-                let oldBalanceData = balanceData.filter { (balanceData :BalanceData) -> Bool in
-                    return balanceData.currency == afterCurrency.symbol
-                }.first
-                
-                let newBalanceDataAmount = oldBalanceData!.value + convertedValue.roundTo(places: 2)
-                
-                let balanceData = BalanceData(
-                    currency: afterCurrency.symbol,
-                    value: newBalanceDataAmount
-                )
-                
-                return self.repository.saveBalance(balances: [balanceData])
-                
-            }.subscribe(onSuccess: { [weak self] (balanceData: [BalanceData]) in
-                guard let self = self else { return }
-                print("success")
-                self.balanceViewModel.balance.onNext(balanceData)
-                
-                let doubleReceiveAmount = Double(convertedValue).roundTo(places: 2)
-                self.receiveRowViewModel.input.amount.onNext("\(doubleReceiveAmount)")
-                
-            }).disposed(by: self.disposeBag)
-
+            
+            self.saveConvertedCurrency(
+                convertedValue: convertedValue,
+                initialAmountValue: initialAmountValue,
+                from: beforeCurrency,
+                to: afterCurrency
+            )
         })
         
+        self.present(alert,animated: true, completion: nil )
+    }
+    
+    private func showErrorAlert(with error: Error) {
+        let alert = UIAlertController(
+            title: "Oooops",
+            message: "\(error.localizedDescription)",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
         self.present(alert,animated: true, completion: nil )
     }
 }
