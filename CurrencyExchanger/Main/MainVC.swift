@@ -198,7 +198,7 @@ extension MainVC {
     func scheduledTimerWithTimeInterval(){
         // Scheduling timer to Call the function "updateCounting" with the interval of 1 seconds
         self.fetchTimer = Timer.scheduledTimer(
-            timeInterval: 5,
+            timeInterval: 6, // Added 1 second because the loading indicator take 1 second delay
             target: self,
             selector: #selector(self.fetchCurrency),
             userInfo: nil,
