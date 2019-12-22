@@ -21,7 +21,7 @@ public class BalanceViewModel {
     private let repository: Repository = Repository(database: Database())
     public var balance: PublishSubject<[BalanceData]> = PublishSubject<[BalanceData]>()
     private var disposeBag: DisposeBag!
-    private var commission: Double = 0.70
+    public var commission: Double = 0.70
     deinit {
         self.disposeBag = nil
     }
@@ -43,6 +43,11 @@ extension BalanceViewModel {
         }).disposed(by: self.disposeBag)
     }
     
+    /// Save Converted Currency to the Local Database using RxSwift
+    /// - Parameter convertedValue: Value after Convertion to Other "Currency"
+    /// - Parameter initialAmountValue: Value before Convertion to Other "Currency"
+    /// - Parameter beforeCurrency: Currency of the initialAmountValue about to convert
+    /// - Parameter afterCurrency: Currency of the Converted value
     public func saveBalance(
         convertedValue: Double,
         initialAmountValue: Double,
@@ -55,6 +60,11 @@ extension BalanceViewModel {
             let subtractedCommission: Double = balanceDatum.value - self.commission
             let totalValue = subtractedCommission - initialAmountValue
             
+            /*
+                balanceDatum.value is less than the value you're about
+                to convert, returns error on the subscription(onError)
+                if true
+             */
             if balanceDatum.value < initialAmountValue {
                 return .error(ConvertionError.insuficiencyError)
             }
@@ -85,11 +95,34 @@ extension BalanceViewModel {
         
         return saveProcess
     }
+        
+    /// Convertion Computation
+    /// - Parameter receiveCurrency: Currency about to convert
+    /// - Parameter amountToConvert: Amount being converted
+    /// - Returns: Double: Rounded value after convertion
+    public func computeConvertion(
+        receiveCurrency: Currency,
+        amountToConvert amount: Double,
+        debug: Bool = false) -> Double {
+        
+        let computation = amount * Double(receiveCurrency.rate)
+        let computationWithCommission = computation - self.commission
+        let finalValue = computationWithCommission.roundTo(places: 2)
+
+        if debug {
+            print("value: \(computation)")
+            print("value with commision: \(computationWithCommission)")
+            print("Rounded Value: \(finalValue)")
+        }
+
+        return finalValue        
+    }
+    
 }
 
 
 // MARK: - Enumeration Declaration
-enum ConvertionError: Error {
+public enum ConvertionError: Error {
     case insuficiencyError
 }
 

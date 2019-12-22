@@ -266,6 +266,8 @@ extension MainVC {
         self.present(alert,animated: true, completion: nil )
     }
     
+    /// Show Allert if convertion is not possible
+    /// - Parameter error: just an error
     private func showErrorAlert(with error: Error) {
         let alert = UIAlertController(
             title: "Oooops",
@@ -336,17 +338,14 @@ extension MainVC: SubmitRowDelegate {
             let receiveCurrency = self.receiveRowViewModel.output.currency,
             let initialAmountValue: Double = Double(self.sellRowViewModel.output.amount.value)
         else { return }
-
-        let computation = initialAmountValue * Double(receiveCurrency.rate)
-        let computationWithCommission = computation - 0.70
-        let roundedValue = computationWithCommission.roundTo(places: 2)
         
-        print("value: \(computation)")
-        print("value with commision: \(computationWithCommission)")
-        print("Rounded Value: \(roundedValue)")
+        let finalValue: Double = self.balanceViewModel.computeConvertion(
+            receiveCurrency: receiveCurrency,
+            amountToConvert: initialAmountValue
+        )
         
         self.currencyConvertAlert(
-            convertedValue: roundedValue,
+            convertedValue: finalValue,
             initialAmountValue: initialAmountValue,
             from: self.sellRowViewModel.output.currency,
             to: receiveCurrency
