@@ -17,26 +17,33 @@ public class ReceiveRowViewModel: InputOutputViewModel {
     
     public struct Input {
         let currency: AnyObserver<Currency>
+        let amount: AnyObserver<String>
     }
     
     public struct Output {
-        let amount: BehaviorRelay<String> = BehaviorRelay<String>(value: "")
+        var amount: Driver<String> = .just("")
         var currency: Currency?
         
     }
     
     private let currencySubject = PublishSubject<Currency>()
+    private let amountSubject = PublishSubject<String>()
     private var disposeBag: DisposeBag = DisposeBag()
     
     // MARK: - Initializer
     public init() {
         self.output = Output()
-        self.input = Input(currency: self.currencySubject.asObserver())
+        self.input = Input(
+            currency: self.currencySubject.asObserver(),
+            amount: self.amountSubject.asObserver()
+        )
         self.disposeBag = DisposeBag()
         
         self.currencySubject.subscribe(onNext: { [weak self] (currency: Currency) in
             guard let self = self else { return }
             self.output.currency = currency
         }).disposed(by: self.disposeBag)
+        
+        self.output.amount = self.amountSubject.asDriver(onErrorJustReturn: "")            
     }
 }

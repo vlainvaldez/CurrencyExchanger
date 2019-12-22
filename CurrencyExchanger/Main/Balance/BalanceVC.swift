@@ -46,7 +46,6 @@ public class BalanceVC: UIViewController {
         
         self.balanceViewModel.balance.do(onNext: { [weak self] (balanceData: [BalanceData]) -> Void in
             guard let self = self else { return }
-            HUD.hide()
             self.dataSource = balanceData.sorted(
                 by: { (balance1: BalanceData, balance2: BalanceData) -> Bool in
                     return balance1.currency.lowercased() < balance2.currency.lowercased()
@@ -66,6 +65,24 @@ public class BalanceVC: UIViewController {
                 self.rootView.collectionView.reloadData()
             }
         }).disposed(by: self.disposeBag)
+        
+//        if UserDefaults.standard.hasLaunchBefore {
+//            self.repository.saveBalance(balances: balanceData)
+//            .subscribe(onSuccess: { [weak self] (balanceData: [BalanceData]) -> Void in
+//                guard let self = self else { return }
+//                self.balanceViewModel.balance.onNext(balanceData)
+//            }).disposed(by: self.disposeBag)
+            
+//            self.repository.getBalances()
+//                .asObservable()
+//                .bind(to: self.balanceViewModel.balance)
+//                .disposed(by: self.disposeBag)
+//        }
+    }
+    
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.updateDataSource()
     }
     
     // MARK: - Stored Properties

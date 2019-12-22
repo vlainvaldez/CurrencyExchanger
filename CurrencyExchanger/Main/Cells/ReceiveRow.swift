@@ -59,6 +59,7 @@ public class ReceiveRow: UICollectionViewCell {
         }
     }
     private var viewModel: ReceiveRowViewModel?
+    private var disposeBag: DisposeBag!
     
     // MARK: - Initializer
     public override init(frame: CGRect) {
@@ -103,6 +104,10 @@ public class ReceiveRow: UICollectionViewCell {
         
         self.amountTextField.setRadius(radius: 10.0)
     }
+    
+    public override func prepareForReuse() {
+        self.disposeBag = nil
+    }
 }
 
 // MARK: - Public APIs
@@ -111,6 +116,12 @@ extension ReceiveRow {
     
     public func configure(with viewModel: ReceiveRowViewModel) {
         self.viewModel = viewModel
+        
+        self.disposeBag = DisposeBag()
+        
+        viewModel.output.amount
+            .drive(self.amountTextField.rx.text)
+            .disposed(by: self.disposeBag)
     }
 }
 

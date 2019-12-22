@@ -55,8 +55,12 @@ public final class MainVC: UIViewController {
             self.rootView.collectionView.reloadData()
         }
         self.setCurrencyPicker()
+    }
+    
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
         self.checkLaunchedBefore()
-
     }
     
     // MARK: - Stored Properties
@@ -185,53 +189,18 @@ extension MainVC {
     }
     
     func saveCurrencies(_ currencies: [Currency]) {
-        let balanceData: [BalanceData] = currencies.map{ BalanceData(currency: $0.symbol, value: 0.0) }
-        HUD.show(HUDContentType.progress)
-        
-        self.repository.saveBalance(balances: balanceData)
-        .subscribe(onSuccess: { [weak self] (balanceData: [BalanceData]) -> Void in
-            guard let self = self else { return }
-            self.balanceViewModel.balance.onNext(balanceData)
-        }).disposed(by: self.disposeBag)
-        
-//        self.repository.saveBalance(balances: balanceData) { [weak self] (result: Result<Bool, Error>) in
-//            switch result {
-//            case .success:
-//                HUD.hide()
-//                guard
-//                    let self = self
-//                else { return }
-//                self.delegate?.didLoad()
-//            case .failure:
-//                HUD.flash(HUDContentType.error)
-//            }
-//        }
+        let balanceData: [BalanceData] = currencies.map {
+            BalanceData(currency: $0.symbol, value: 0.0)
+        }
+        self.balanceViewModel.saveCurrencies(balanceData)
     }
     
     private func checkLaunchedBefore() {
         if !UserDefaults.standard.hasLaunchBefore  {
             let balanceData: BalanceData = BalanceData(currency: "EUR", value: 1000)
-            self.repository.saveBalance([balanceData]).subscribe(onSuccess: { _ in
-                UserDefaults.standard.hasLaunchBefore = true
-            }) { (error: Error) in
-                print(error.localizedDescription)
-            }.disposed(by: self.disposeBag)
-            
+            self.repository.saveBalance([balanceData]).subscribe().disposed(by: self.disposeBag)
         }
     }
-    
-//    private func saveBalance(_ balanceData: BalanceData) {
-//        HUD.show(HUDContentType.progress)
-//        self.repository.saveBalance(balances: [balanceData]) { (result: Result<Bool, Error>) -> Void in
-//            switch result {
-//            case .success:
-//                HUD.hide()
-//                self.rootView.collectionView.reloadData()
-//            case .failure:
-//                HUD.flash(HUDContentType.error)
-//            }
-//        }
-//    }
     
     private func currencyConvertAlert(
         convertedValue: Double,
@@ -255,29 +224,40 @@ extension MainVC {
 
             self.repository.getBalance(with: beforeCurrency)
             .flatMap { (balanceDatum: BalanceData) -> Single<[BalanceData]> in
+                
                 let subtractedCommission: Double = balanceDatum.value - 0.70
                 let totalValue = subtractedCommission - initialAmountValue
-                let newBalance = BalanceData(currency: balanceDatum.currency, value: totalValue)
+                let newBalance = BalanceData(
+                    currency: balanceDatum.currency,
+                    value: totalValue.roundTo(places: 2)
+                )
                 return self.repository.saveBalance(balances: [newBalance])
+                
             }.flatMap { (balanceData: [BalanceData]) -> Single<[BalanceData]> in
-                let balanceData = BalanceData(currency: afterCurrency.symbol, value: convertedValue)
+                                
+                let oldBalanceData = balanceData.filter { (balanceData :BalanceData) -> Bool in
+                    return balanceData.currency == afterCurrency.symbol
+                }.first
+                
+                let newBalanceDataAmount = oldBalanceData!.value + convertedValue.roundTo(places: 2)
+                
+                let balanceData = BalanceData(
+                    currency: afterCurrency.symbol,
+                    value: newBalanceDataAmount
+                )
+                
                 return self.repository.saveBalance(balances: [balanceData])
+                
             }.subscribe(onSuccess: { [weak self] (balanceData: [BalanceData]) in
                 guard let self = self else { return }
                 print("success")
                 self.balanceViewModel.balance.onNext(balanceData)
+                
+                let doubleReceiveAmount = Double(convertedValue).roundTo(places: 2)
+                self.receiveRowViewModel.input.amount.onNext("\(doubleReceiveAmount)")
+                
             }).disposed(by: self.disposeBag)
 
-//            self.repository.getBalance(with: beforeCurrency) { (result: Result<BalanceData, Error>) -> Void in
-//                switch result {
-//                case .success(let balanceData):
-//                    print("\(balanceData.currency) \(balanceData.value)")
-//                case .failure:
-//                    HUD.flash(HUDContentType.error)
-//                }
-//            }
-            
-//            self.saveBalance(balanceData)
         })
         
         self.present(alert,animated: true, completion: nil )
@@ -379,7 +359,11 @@ extension MainVC {
                 )
 
             self.setPickerValues(currencies: currencies)
-            self.saveCurrencies(currencies)
+            
+            if !UserDefaults.standard.hasLaunchBefore  {
+                self.saveCurrencies(currencies)
+                UserDefaults.standard.hasLaunchBefore = true
+            }
         }
     }
     
