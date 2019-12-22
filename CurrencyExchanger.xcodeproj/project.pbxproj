@@ -17,6 +17,9 @@
 		7C094FE123994BFA00B78FD7 /* CurrencyExchangerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C094FE023994BFA00B78FD7 /* CurrencyExchangerTests.swift */; };
 		7C094FEC23994BFA00B78FD7 /* CurrencyExchangerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C094FEB23994BFA00B78FD7 /* CurrencyExchangerUITests.swift */; };
 		7C44E50F23AD4B7C00B7A149 /* BalanceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C44E50E23AD4B7C00B7A149 /* BalanceViewModel.swift */; };
+		7C44E51223AFAE9D00B7A149 /* KeyboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C44E51123AFAE9D00B7A149 /* KeyboardManager.swift */; };
+		7C44E51523AFAECA00B7A149 /* KeyboardManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C44E51423AFAECA00B7A149 /* KeyboardManagerDelegate.swift */; };
+		7C44E51723AFB77E00B7A149 /* MainViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C44E51623AFB77E00B7A149 /* MainViewDelegate.swift */; };
 		7C7789F7239CF2D100B5E838 /* AbstractCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7789F6239CF2D100B5E838 /* AbstractCoordinator.swift */; };
 		7C7789FA239CF3D100B5E838 /* AnyTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7789F9239CF3D100B5E838 /* AnyTabCoordinator.swift */; };
 		7C7789FC239CF3FB00B5E838 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7789FB239CF3FB00B5E838 /* Coordinator.swift */; };
@@ -98,6 +101,9 @@
 		7C094FEB23994BFA00B78FD7 /* CurrencyExchangerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyExchangerUITests.swift; sourceTree = "<group>"; };
 		7C094FED23994BFA00B78FD7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7C44E50E23AD4B7C00B7A149 /* BalanceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceViewModel.swift; sourceTree = "<group>"; };
+		7C44E51123AFAE9D00B7A149 /* KeyboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardManager.swift; sourceTree = "<group>"; };
+		7C44E51423AFAECA00B7A149 /* KeyboardManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardManagerDelegate.swift; sourceTree = "<group>"; };
+		7C44E51623AFB77E00B7A149 /* MainViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewDelegate.swift; sourceTree = "<group>"; };
 		7C7789F6239CF2D100B5E838 /* AbstractCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractCoordinator.swift; sourceTree = "<group>"; };
 		7C7789F9239CF3D100B5E838 /* AnyTabCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyTabCoordinator.swift; sourceTree = "<group>"; };
 		7C7789FB239CF3FB00B5E838 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
@@ -237,6 +243,23 @@
 			path = CurrencyExchangerUITests;
 			sourceTree = "<group>";
 		};
+		7C44E51023AFAE8200B7A149 /* Keyboard Manager */ = {
+			isa = PBXGroup;
+			children = (
+				7C44E51323AFAEAF00B7A149 /* Protocols */,
+				7C44E51123AFAE9D00B7A149 /* KeyboardManager.swift */,
+			);
+			path = "Keyboard Manager";
+			sourceTree = "<group>";
+		};
+		7C44E51323AFAEAF00B7A149 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				7C44E51423AFAECA00B7A149 /* KeyboardManagerDelegate.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
 		7C7789F4239CF24D00B5E838 /* Architecture */ = {
 			isa = PBXGroup;
 			children = (
@@ -296,6 +319,7 @@
 			children = (
 				7C778A0B239CF86000B5E838 /* MainVCDelegate.swift */,
 				7C86FC6723A74D7900A726BE /* InputOutputViewModel.swift */,
+				7C44E51623AFB77E00B7A149 /* MainViewDelegate.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -392,6 +416,7 @@
 		7C83C0EA23A73A18002B667A /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				7C44E51023AFAE8200B7A149 /* Keyboard Manager */,
 				7C97A9F623AC7BDC00CFC3CF /* Realm */,
 				7C83C0EB23A73A34002B667A /* TextField.swift */,
 				7C97A9FF23ACF81E00CFC3CF /* Util.swift */,
@@ -723,9 +748,11 @@
 				7C86FC6C23A782F600A726BE /* Double+Extensions.swift in Sources */,
 				7C83C0E623A49AB3002B667A /* Currency.swift in Sources */,
 				7C778A00239CF44700B5E838 /* TabCoordinator.swift in Sources */,
+				7C44E51223AFAE9D00B7A149 /* KeyboardManager.swift in Sources */,
 				7C778A07239CF7E600B5E838 /* MainView.swift in Sources */,
 				7C86FC6823A74D7900A726BE /* InputOutputViewModel.swift in Sources */,
 				7C86FC7A23AA6BEA00A726BE /* BalanceItemRow.swift in Sources */,
+				7C44E51523AFAECA00B7A149 /* KeyboardManagerDelegate.swift in Sources */,
 				7C778A0C239CF86000B5E838 /* MainVCDelegate.swift in Sources */,
 				7C83C0D823A3A875002B667A /* String+Extensions.swift in Sources */,
 				7C83C0C823A34ABB002B667A /* UIView+Extensions.swift in Sources */,
@@ -734,6 +761,7 @@
 				7C778A09239CF7F500B5E838 /* MainCoordinator.swift in Sources */,
 				7C97A9F823AC7BF000CFC3CF /* Database.swift in Sources */,
 				7C97A9F523AC7AAD00CFC3CF /* Balance.swift in Sources */,
+				7C44E51723AFB77E00B7A149 /* MainViewDelegate.swift in Sources */,
 				7C83C0EC23A73A34002B667A /* TextField.swift in Sources */,
 				7C83C0E123A3E9FB002B667A /* CurrencyAPIService.swift in Sources */,
 				7C83C0D123A34FC7002B667A /* BalancesRow.swift in Sources */,

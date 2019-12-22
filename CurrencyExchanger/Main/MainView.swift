@@ -11,6 +11,9 @@ import SnapKit
 
 public class MainView: UIView {
     
+    // MARK: - Delegate Declaration
+    public weak var delegate: MainViewDelegate?
+    
     // MARK: - Subviews
     public var collectionView: UICollectionView = {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
@@ -42,20 +45,28 @@ public class MainView: UIView {
         view.frame = CGRect(x: 5, y: 20, width: 250, height: 140)
         return view
     }()
-
+    
+    // MARK: - Stored Properties
+    private var keyboardManager: KeyboardManager?
+    private var collectionViewBottomConstraint: Constraint!
+    
     // MARK: - Initializer
     public override init(frame: CGRect) {
         super.init(frame: frame)        
         self.backgroundColor = UIColor.white
         
+        self.keyboardManager = KeyboardManager(scrollView: self.collectionView)
+        self.keyboardManager?.beginObservingKeyboard()
+        self.keyboardManager?.delegate = self
+        
         self.subviews(forAutoLayout: [
             self.collectionView
         ])
         
-        self.collectionView.snp.remakeConstraints { (make: ConstraintMaker) -> Void in
-            make.edges.equalToSuperview()
+        self.collectionView.snp.remakeConstraints { [unowned self] (make: ConstraintMaker) -> Void in
+            make.top.leading.trailing.equalToSuperview()
+            self.collectionViewBottomConstraint = make.bottom.equalToSuperview().constraint
         }
-        
     }
     
     public required init?(coder: NSCoder) {
@@ -64,6 +75,20 @@ public class MainView: UIView {
     
     // MARK: - Deinitializer
     deinit {
+        self.keyboardManager?.endObservingKeyboard()
         print("\(type(of: self)) was deallocated")
     }
+}
+
+// MARK: - KeyboardManagerDelegate Methods
+extension MainView: KeyboardManagerDelegate {
+    
+    public func kmDidShow(height: CGFloat) {
+        self.delegate?.keyBoardShown()
+    }
+    
+    public func kmDidHide() {
+        self.delegate?.keyBoardHidden()
+    }
+    
 }

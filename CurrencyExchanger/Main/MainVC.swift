@@ -38,8 +38,10 @@ public final class MainVC: UIViewController {
     
     // MARK: - LifeCycle Methods
     public override func loadView() {
-        super.loadView()        
-        self.view = MainView()
+        super.loadView()
+        let mainView = MainView()
+        mainView.delegate = self
+        self.view = mainView
         self.rootView.collectionView.dataSource = self
         self.rootView.collectionView.delegate = self
         self.cellRegistration()
@@ -49,12 +51,15 @@ public final class MainVC: UIViewController {
         super.viewDidLoad()
         self.title = "Currency Exchanger"
         
-        self.fetchCurrency()
         if let balanceVC = self.balanceVC {
             self.addChildContentViewController(balanceVC)
             self.rootView.collectionView.reloadData()
         }
+        
+        self.fetchCurrency()
+        self.scheduledTimerWithTimeInterval()
         self.setCurrencyPicker()
+        
     }
     
     public override func viewWillAppear(_ animated: Bool) {
@@ -74,6 +79,8 @@ public final class MainVC: UIViewController {
     public weak var balanceVC: BalanceVC?
     private let repository: Repository = Repository(database: Database())
     private var balanceViewModel: BalanceViewModel
+    private var fetchTimer: Timer?
+    private var interval: TimeInterval = 0
 }
 
 // MARK: - UICollectionViewDataSource Methods
@@ -188,6 +195,16 @@ extension MainVC {
         childViewController.willMove(toParent: nil)
     }
     
+    func scheduledTimerWithTimeInterval(){
+        // Scheduling timer to Call the function "updateCounting" with the interval of 1 seconds
+        self.fetchTimer = Timer.scheduledTimer(
+            timeInterval: 5,
+            target: self,
+            selector: #selector(self.fetchCurrency),
+            userInfo: nil,
+            repeats: true
+        )
+    }
     
     /// Save Currencies to the Local Database
     /// - Parameter currencies: Array of "Currency" Object
@@ -356,11 +373,11 @@ extension MainVC: SubmitRowDelegate {
 // MARK: - Network API Access
 extension MainVC {
     
-    private func fetchCurrency() {
+    @objc private func fetchCurrency() {
         HUD.show(HUDContentType.progress)
         self.delegate?.getCurrency { [weak self] (exchange: Exchange) -> Void in
             guard let self = self else { return }
-            HUD.hide()
+            HUD.hide(afterDelay: 1, completion: nil)
             self.exchange = exchange
             let currencies = exchange.rates
                 .map { Currency(symbol: $0.key, rate: $0.value) }
@@ -369,9 +386,9 @@ extension MainVC {
                         return currency1.symbol.lowercased() < currency2.symbol.lowercased()
                     }
                 )
-
+            print("fetch again")
             self.setPickerValues(currencies: currencies)
-            
+            self.interval = 5
             if !UserDefaults.standard.hasLaunchBefore  {
                 self.saveCurrencies(currencies)
                 UserDefaults.standard.hasLaunchBefore = true
@@ -412,6 +429,20 @@ extension MainVC: UIPickerViewDelegate {
             self.receiveCurrency = self.exchangeCurrencies[row]
         case .none:
             break
+        }
+    }
+}
+
+// MARK: - MainViewDelegate Methods
+extension MainVC: MainViewDelegate {
+    public func keyBoardShown() {
+        self.fetchTimer?.invalidate()
+        self.fetchTimer = nil
+    }
+    
+    public func keyBoardHidden() {
+        if self.fetchTimer == nil {
+            self.scheduledTimerWithTimeInterval()
         }
     }
 }
