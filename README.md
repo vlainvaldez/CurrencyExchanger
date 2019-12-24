@@ -32,6 +32,9 @@ A Storyboard full of vcs is really slow to load and use, thats why I use it with
 
 - Data Persistence(local storage)
 
+### Sample
+![alt text](https://github.com/vlainvaldez/DotStepIndicator/blob/stachViewImplementation/dottedStepIndicator.gif)
+
 ### How To Install
 
 1. Cocoapods needs to be installed first on your machine
