@@ -81,6 +81,16 @@ public final class MainVC: UIViewController {
     private var balanceViewModel: BalanceViewModel
     private var fetchTimer: Timer?
     private var interval: TimeInterval = 0
+    private var alertIsPresented: Bool = false {
+        didSet {
+            switch alertIsPresented {
+            case true:
+                self.stopTimer()
+            case false:
+                self.resumeTimer()
+            }
+        }
+    }
 }
 
 // MARK: - UICollectionViewDataSource Methods
@@ -197,6 +207,17 @@ extension MainVC {
         self.rootView.receiveCurrencyPicker.reloadAllComponents()
     }
     
+    private func stopTimer() {
+        self.fetchTimer?.invalidate()
+        self.fetchTimer = nil
+    }
+    
+    private func resumeTimer() {
+        if self.fetchTimer == nil {
+            self.scheduledTimerWithTimeInterval()
+        }
+    }
+    
     // MARK: - ChildViewControllers
     private func addChildContentViewController(_ childViewController: UIViewController) {
         self.addChild(childViewController)
@@ -256,7 +277,7 @@ extension MainVC {
                 guard let self = self else { return}
                 self.balanceViewModel.balance.onNext(balanceData)
                 let doubleReceiveAmount = Double(convertedValue).roundTo(places: 2)
-                self.receiveRowViewModel.input.amount.onNext("\(doubleReceiveAmount)")
+                self.receiveRowViewModel.input.amount.onNext("+\(doubleReceiveAmount)")
             },
             onError: { [weak self] (error: Error) in
                 guard let self = self else { return}
@@ -281,11 +302,22 @@ extension MainVC {
                     """,
             preferredStyle: .alert
         )        
+
+        self.alertIsPresented = true
+        self.view.endEditing(true)
+        alert.addAction(
+            UIAlertAction(
+                title: "Cancel",
+                style: UIAlertAction.Style.cancel,
+                handler: { (alertAction: UIAlertAction) -> Void in
+                    self.alertIsPresented = false
+                }
+            )
+        )
         
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "OK", style: .default) { [weak self] (alertAction: UIAlertAction) -> Void in
             guard let self = self else { return }
-            
+            self.alertIsPresented = false
             self.saveConvertedCurrency(
                 convertedValue: convertedValue,
                 initialAmountValue: initialAmountValue,
@@ -300,12 +332,25 @@ extension MainVC {
     /// Show Allert if convertion is not possible
     /// - Parameter error: just an error
     private func showErrorAlert(with error: Error) {
+        self.view.endEditing(true)
         let alert = UIAlertController(
             title: "Oooops",
             message: "\(error.localizedDescription)",
             preferredStyle: .alert
         )
-        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        
+        self.alertIsPresented = true
+        alert.addAction(
+            UIAlertAction(
+                title: "Ok",
+                style: UIAlertAction.Style.default,
+                handler: { [weak self] (alertAction: UIAlertAction) -> Void in
+                    guard let self = self else { return }
+                    self.alertIsPresented = false
+                }
+            )
+        )
+        
         self.present(alert,animated: true, completion: nil )
     }
 }
@@ -313,7 +358,7 @@ extension MainVC {
 // MARK: - SellRowDelegate Methods
 extension MainVC: SellRowDelegate {
     public func sellChangeCurrency(completion: @escaping (Currency) -> Void) {
-        
+        self.view.endEditing(true)
         let alert = UIAlertController(
             title: "Currencies Choices",
             message: "\n\n\n\n\n\n",
@@ -321,13 +366,22 @@ extension MainVC: SellRowDelegate {
         )
         
         alert.view.addSubview(self.rootView.sellCurrencyPicker)
+        self.alertIsPresented = true
+        alert.addAction(
+            UIAlertAction(
+                title: "Cancel",
+                style: UIAlertAction.Style.cancel,
+                handler: { [weak self] (alertAction: UIAlertAction) -> Void in
+                    guard let self = self else { return }
+                    self.alertIsPresented = false
+                }
+            )
+        )
         
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "OK", style: .default) { [weak self] (alertAction: UIAlertAction) -> Void in
-            guard
-                let self = self,
-                let currency = self.sellCurrency
-            else { return }            
+            guard let self = self else { return }
+            self.alertIsPresented = false
+            guard let currency = self.sellCurrency else { return }
             completion(currency)
         })
         
@@ -339,7 +393,7 @@ extension MainVC: SellRowDelegate {
 // MARK: - SellRowDelegate Methods
 extension MainVC: ReceiveRowDelegate {
     public func receiveChangeCurrency(completion: @escaping (Currency) -> Void) {
-        
+        self.view.endEditing(true)
         let alert = UIAlertController(
             title: "Currencies Choices",
             message: "\n\n\n\n\n\n",
@@ -347,13 +401,22 @@ extension MainVC: ReceiveRowDelegate {
         )
         
         alert.view.addSubview(self.rootView.receiveCurrencyPicker)
+        self.alertIsPresented = true
+        alert.addAction(
+            UIAlertAction(
+                title: "Cancel",
+                style: UIAlertAction.Style.cancel,
+                handler: { [weak self] (alertAction: UIAlertAction) -> Void in
+                    guard let self = self else { return }
+                    self.alertIsPresented = false
+                }
+            )
+        )
         
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "OK", style: .default) { [weak self] (alertAction: UIAlertAction) -> Void in
-            guard
-                let self = self,
-                let currency = self.receiveCurrency
-            else { return }
+            guard let self = self else { return }
+            self.alertIsPresented = false
+            guard let currency = self.receiveCurrency else { return }
             completion(currency)
         })
         
@@ -429,7 +492,6 @@ extension MainVC: UIPickerViewDataSource {
     
     public func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
-        
     }
     
     public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
@@ -462,13 +524,12 @@ extension MainVC: UIPickerViewDelegate {
 // MARK: - MainViewDelegate Methods
 extension MainVC: MainViewDelegate {
     public func keyBoardShown() {
-        self.fetchTimer?.invalidate()
-        self.fetchTimer = nil
+        self.stopTimer()
     }
     
     public func keyBoardHidden() {
-        if self.fetchTimer == nil {
-            self.scheduledTimerWithTimeInterval()
+        if !self.alertIsPresented {
+            self.resumeTimer()
         }
     }
 }

@@ -25,6 +25,12 @@ public class ReceiveRow: UICollectionViewCell {
         view.backgroundColor = UIColor.white
         view.keyboardType = .numberPad
         view.isEnabled = false
+        view.textColor = AppUI.Color.springGreen
+        view.font = UIFont.systemFont(
+            ofSize: 15.0,
+            weight: UIFont.Weight.semibold
+        )
+        view.textAlignment = .right
         return view
     }()
     

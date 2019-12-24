@@ -24,6 +24,11 @@ public class SellRow: UICollectionViewCell {
         view.autocorrectionType = UITextAutocorrectionType.no
         view.backgroundColor = UIColor.white
         view.keyboardType = .decimalPad
+        view.font = UIFont.systemFont(
+            ofSize: 15.0,
+            weight: UIFont.Weight.semibold
+        )
+        view.textAlignment = .right
         return view
     }()
 

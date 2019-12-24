@@ -18,5 +18,6 @@ public enum AppUI {
         static let dark: UIColor = UIColor.init(red: 35.0/255.0, green: 44.0/255.0, blue: 51.0/255.0, alpha: 1.0)
         static let lightYellow: UIColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 113.0/255.0, alpha: 1.0)
         static let green: UIColor = UIColor(red: 7.0/255.0, green: 192.0/255.0, blue: 160.0/255.0, alpha: 1.0)
+        static let springGreen: UIColor = UIColor(red: 34.0/255.0, green: 139.0/255.0, blue: 34.0/255.0, alpha: 1.0)
     }
 }
