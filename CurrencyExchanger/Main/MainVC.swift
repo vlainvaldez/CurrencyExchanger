@@ -181,10 +181,10 @@ extension MainVC {
     private func setPickerValues(currencies: [Currency] ) {
         
         var currencies = currencies
-        let eurCurrency: Currency = Currency(symbol: "EUR", rate: 0.0)
+        let eurCurrency: Currency = Currency(symbol: LocalSymbol.EURO.rawValue, rate: 0.0)
         currencies.append(eurCurrency)
         
-        if let eurCurrencyIndex = currencies.firstIndex(where: { $0.symbol == "EUR" }) {
+        if let eurCurrencyIndex = currencies.firstIndex(where: { $0.symbol == LocalSymbol.EURO.rawValue }) {
             currencies = Util.rearrange(
                 array: currencies,
                 fromIndex: eurCurrencyIndex,
@@ -365,12 +365,12 @@ extension MainVC: ReceiveRowDelegate {
 extension MainVC: SubmitRowDelegate {
     public func submitTapped() {
         
-        guard
-            let receiveCurrency = self.receiveRowViewModel.output.currency,
+        guard            
             let initialAmountValue: Double = Double(self.sellRowViewModel.output.amount.value)
         else { return }
         
         let sellCurrency = self.sellRowViewModel.output.currency
+        let receiveCurrency = self.receiveRowViewModel.output.currency
         
         if receiveCurrency.symbol == sellCurrency.symbol {
             self.showErrorAlert(with: ConvertionError.sameCurrencyError)

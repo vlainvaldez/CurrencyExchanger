@@ -52,7 +52,7 @@ public class BalanceVC: UIViewController {
                 }
             )
 
-            if let eurCurrencyIndex = self.dataSource.firstIndex(where: { $0.currency == "EUR" }) {
+            if let eurCurrencyIndex = self.dataSource.firstIndex(where: { $0.currency == LocalSymbol.EURO.rawValue }) {
                 self.dataSource = Util.rearrange(
                     array: self.dataSource,
                     fromIndex: eurCurrencyIndex,
@@ -107,7 +107,7 @@ extension BalanceVC {
                 }
             )
 
-            if let eurCurrencyIndex = self.dataSource.firstIndex(where: { $0.currency == "EUR" }) {
+            if let eurCurrencyIndex = self.dataSource.firstIndex(where: { $0.currency == LocalSymbol.EURO.rawValue }) {
                 self.dataSource = Util.rearrange(
                     array: self.dataSource,
                     fromIndex: eurCurrencyIndex,

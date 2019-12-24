@@ -22,7 +22,7 @@ public class ReceiveRowViewModel: InputOutputViewModel {
     
     public struct Output {
         var amount: Driver<String> = .just("")
-        var currency: Currency?
+        var currency: Currency = Currency(symbol: LocalSymbol.EURO.rawValue, rate: 0.0)
         
     }
     
@@ -44,6 +44,6 @@ public class ReceiveRowViewModel: InputOutputViewModel {
             self.output.currency = currency
         }).disposed(by: self.disposeBag)
         
-        self.output.amount = self.amountSubject.asDriver(onErrorJustReturn: "")            
+        self.output.amount = self.amountSubject.asDriver(onErrorJustReturn: "")
     }
 }

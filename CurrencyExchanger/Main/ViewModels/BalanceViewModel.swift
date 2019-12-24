@@ -31,7 +31,7 @@ public class BalanceViewModel {
 extension BalanceViewModel {
     
     public func saveDefaultBalance(with value: Double = 1000.00) {
-        let balanceData: BalanceData = BalanceData(currency: "EUR", value: value)
+        let balanceData: BalanceData = BalanceData(currency: LocalSymbol.EURO.rawValue, value: value)
         self.repository.saveBalance([balanceData]).subscribe().disposed(by: self.disposeBag)
     }
     
@@ -112,7 +112,15 @@ extension BalanceViewModel {
         
         var computation = amount * Double(receiveCurrency.rate)
         
-        if receiveCurrency.symbol == "EUR" {
+        let checkEuroExistance: [Currency] = [receiveCurrency, sellCurrency].filter {
+            $0.symbol == LocalSymbol.EURO.rawValue
+        }
+        
+        if  checkEuroExistance.isEmpty {
+            throw ConvertionError.noEuroError
+        }
+        
+        if receiveCurrency.symbol == LocalSymbol.EURO.rawValue {
             computation = amount / Double(sellCurrency.rate)
             self.commission = self.commission * sellCurrency.rate
         }
@@ -137,12 +145,12 @@ extension BalanceViewModel {
     
 }
 
-
 // MARK: - Enumeration Declaration
 public enum ConvertionError: Error {
     case insuficiencyError
     case sameCurrencyError
     case commissionError
+    case noEuroError
 }
 
 extension ConvertionError: LocalizedError {
@@ -158,6 +166,18 @@ extension ConvertionError: LocalizedError {
                 """,
                 comment: "Convertion Error"
             )
+        case .noEuroError:
+            return NSLocalizedString("""
+                    We Apologize for the inconvenience but
+                    We can only do Euro to other currencies
+                    and other currencies to Euro
+                """,
+                comment: "Convertion Error"
+            )
         }
     }
+}
+
+public enum LocalSymbol: String {
+    case EURO = "EUR"
 }
