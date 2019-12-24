@@ -8,7 +8,6 @@
 
 import Foundation
 import RealmSwift
-import RxRealm
 import RxSwift
 
 public final class Database {

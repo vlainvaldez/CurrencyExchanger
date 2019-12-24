@@ -1,8 +1,5 @@
 PODS:
   - Alamofire (4.9.0)
-  - Kingfisher (5.11.0):
-    - Kingfisher/Core (= 5.11.0)
-  - Kingfisher/Core (5.11.0)
   - Moya (13.0.1):
     - Moya/Core (= 13.0.1)
   - Moya/Core (13.0.1):
@@ -18,53 +15,44 @@ PODS:
   - RxCocoa (5.0.0):
     - RxRelay (~> 5)
     - RxSwift (~> 5)
-  - RxRealm (2.0.0):
-    - RealmSwift (~> 4.0)
-    - RxSwift (~> 5.0)
   - RxRelay (5.0.1):
     - RxSwift (~> 5)
   - RxSwift (5.0.0)
   - SnapKit (5.0.1)
 
 DEPENDENCIES:
-  - Kingfisher
   - Moya (~> 13.0)
   - PKHUD (~> 5.0)
   - RealmSwift (= 4.0)
   - RxCocoa (= 5.0)
-  - RxRealm
   - RxSwift (= 5.0)
   - SnapKit (~> 5.0.0)
 
 SPEC REPOS:
   trunk:
     - Alamofire
-    - Kingfisher
     - Moya
     - PKHUD
     - Realm
     - RealmSwift
     - Result
     - RxCocoa
-    - RxRealm
     - RxRelay
     - RxSwift
     - SnapKit
 
 SPEC CHECKSUMS:
   Alamofire: afc3e7c6db61476cb45cdd23fed06bad03bbc321
-  Kingfisher: 4569606189149e19c7d9439f47e885d0679b7a90
   Moya: f4a4b80ff2f8a4ffc208dfb31cd91636622fee6e
   PKHUD: 98f3e4bc904b9c916f1c5bb6d765365b5357291b
   Realm: 0c5b8f398daeec5b29824e41c453ff9e126e31d8
   RealmSwift: 02e1f604f7091ec535145055764ca53efa8cdc92
   Result: bd966fac789cc6c1563440b348ab2598cc24d5c7
   RxCocoa: fcf32050ac00d801f34a7f71d5e8e7f23026dcd8
-  RxRealm: 900f5c7e6f0a2d6527b56eaf7283f3035ec1e8ba
   RxRelay: 89d54507f4fd4d969e6ec1d4bd7f3673640b4640
   RxSwift: 8b0671caa829a763bbce7271095859121cbd895f
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
 
-PODFILE CHECKSUM: 22efaaa895f8ebc4ca357df81f414eebfaca29c2
+PODFILE CHECKSUM: df37f76eb3653dd04ebce325d00e8ac2429697d6
 
 COCOAPODS: 1.8.4
