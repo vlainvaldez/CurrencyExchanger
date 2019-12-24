@@ -65,7 +65,7 @@ extension BalanceItemRow {
     
     public func configure(with balanceData: BalanceData) {
         self.currencyLabel.text = balanceData.currency
-        self.amountLabel.text = "\(balanceData.value)"
+        self.amountLabel.text = "\(balanceData.value.roundTo(places: 2))"
     }
 }
 

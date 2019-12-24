@@ -276,7 +276,8 @@ extension MainVC {
             message: """
                     \n
                     You have converted \(initialAmountValue) \(beforeCurrency.symbol) to
-                    \(convertedValue) \(afterCurrency.symbol). Commission Fee - 0.70 EUR
+                    \(convertedValue.roundTo(places: 2)) \(afterCurrency.symbol).
+                    Commission Fee - 0.70 EUR
                     """,
             preferredStyle: .alert
         )        

@@ -75,7 +75,7 @@ extension BalanceViewModel {
 
             let newBalance = BalanceData(
                 currency: balanceDatum.currency,
-                value: totalValue.roundTo(places: 2)
+                value: totalValue
             )
             return self.repository.saveBalance(balances: [newBalance])
             
@@ -86,11 +86,11 @@ extension BalanceViewModel {
                     return balanceData.currency == afterCurrency.symbol
                 }.first
             
-            let newBalanceDataAmount = oldBalanceData!.value + convertedValue.roundTo(places: 2)
+            let newBalanceDataAmount = oldBalanceData!.value + convertedValue
             
             let balanceData = BalanceData(
                 currency: afterCurrency.symbol,
-                value: newBalanceDataAmount.roundTo(places: 2)
+                value: newBalanceDataAmount
             )
             
             return self.repository.saveBalance(balances: [balanceData])
@@ -124,7 +124,7 @@ extension BalanceViewModel {
         }
         
         
-        let finalValue = computationWithCommission.roundTo(places: 2)
+        let finalValue = computationWithCommission
 
         if debug {
             print("value: \(computation)")
