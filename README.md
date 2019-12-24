@@ -33,7 +33,7 @@ A Storyboard full of vcs is really slow to load and use, thats why I use it with
 - Data Persistence(local storage)
 
 ### Sample
-![alt text](https://github.com/vlainvaldez/DotStepIndicator/blob/stachViewImplementation/dottedStepIndicator.gif)
+![alt text](https://github.com/vlainvaldez/CurrencyExchanger/blob/master/ScreenShot/screenshot.png)
 
 ### How To Install
 
