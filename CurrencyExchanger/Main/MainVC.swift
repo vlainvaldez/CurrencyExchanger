@@ -151,6 +151,16 @@ extension MainVC: UICollectionViewDataSource {
             else { return UICollectionViewCell() }
             cell.delegate = self
             return cell
+        case .resetRow:
+            guard
+                let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: ResetRow.identifier,
+                    for: indexPath
+                ) as? ResetRow
+            
+            else { return UICollectionViewCell() }
+            cell.delegate = self
+            return cell
         }
     }
 }
@@ -179,6 +189,7 @@ extension MainVC {
         self.rootView.collectionView.register(ReceiveRow.self, forCellWithReuseIdentifier: ReceiveRow.identifier)
         self.rootView.collectionView.register(SellRow.self, forCellWithReuseIdentifier: SellRow.identifier)
         self.rootView.collectionView.register(SubmitRow.self, forCellWithReuseIdentifier: SubmitRow.identifier)
+        self.rootView.collectionView.register(ResetRow.self, forCellWithReuseIdentifier: ResetRow.identifier)
     }
     
     private func setCurrencyPicker() {
@@ -421,6 +432,13 @@ extension MainVC: ReceiveRowDelegate {
         })
         
         self.present(alert,animated: true, completion: nil )
+    }
+}
+
+extension MainVC: ResetRowDelegate {
+    public func clearTapped() {
+        self.receiveRowViewModel.input.amount.onNext("")
+        self.sellRowViewModel.input.amount.onNext("")
     }
 }
 

@@ -13,4 +13,5 @@ public enum MainRows: Int, CaseIterable {
     case sellRow
     case receiveRow
     case submitRow
+    case resetRow
 }

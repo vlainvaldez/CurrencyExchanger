@@ -151,6 +151,10 @@ extension SellRow {
             .bind(to: viewModel.input.amount)
             .disposed(by: self.disposeBag)
         
+        viewModel.output.amount.asDriver()
+            .drive(self.amountTextField.rx.text)
+            .disposed(by: self.disposeBag)
+        
     }
 }
 

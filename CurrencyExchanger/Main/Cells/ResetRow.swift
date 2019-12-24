@@ -1,23 +1,23 @@
 //
-//  SubmitRow.swift
+//  ResetRow.swift
 //  CurrencyExchanger
 //
-//  Created by alvin joseph valdez on 12/13/19.
+//  Created by alvin joseph valdez on 12/24/19.
 //  Copyright © 2019 alvin joseph valdez. All rights reserved.
 //
 
 import UIKit
 import SnapKit
 
-public class SubmitRow: UICollectionViewCell {
+public class ResetRow: UICollectionViewCell {
     
     // MARK: - Delegate Declaration
-    public weak var delegate: SubmitRowDelegate?
+    public weak var delegate: ResetRowDelegate?
     
     // MARK: - Subviews
-    public let submitButton: UIButton = {
+    public let clearButton: UIButton = {
         let view: UIButton = UIButton()
-        view.setTitle("Submit", for: UIControl.State.normal)
+        view.setTitle("Clear", for: UIControl.State.normal)
         view.setTitleColor(
             UIColor.white,
             for: UIControl.State.normal
@@ -27,7 +27,7 @@ public class SubmitRow: UICollectionViewCell {
             weight: UIFont.Weight.semibold
         )
         view.accessibilityIdentifier = "saveButton_UIButton"
-        view.backgroundColor = AppUI.Color.green
+        view.backgroundColor = UIColor.red.withAlphaComponent(0.7)
         return view
     }()
     
@@ -38,10 +38,10 @@ public class SubmitRow: UICollectionViewCell {
         self.backgroundColor = UIColor.clear
         
         self.subviews(forAutoLayout: [
-            self.submitButton
+            self.clearButton
         ])
         
-        self.submitButton.snp.remakeConstraints { (make: ConstraintMaker) -> Void in
+        self.clearButton.snp.remakeConstraints { (make: ConstraintMaker) -> Void in
             make.top.equalToSuperview().offset(20.0)
             make.leading.equalToSuperview().offset(50.0)
             make.trailing.equalToSuperview().inset(50.0)
@@ -58,30 +58,30 @@ public class SubmitRow: UICollectionViewCell {
     public override func layoutSubviews() {
         super.layoutSubviews()
         
-        self.submitButton.setRadius(radius: 10)
+        self.clearButton.setRadius(radius: 10)
     }
 }
 
 // MARK: - Public APIs
-extension SubmitRow {
-    public static var identifier: String = "SubmitRow"
+extension ResetRow {
+    public static var identifier: String = "ResetRow"
 }
 
 // MARK: - Helper Methods
-extension SubmitRow {
+extension ResetRow {
     
     private func setUpTargetActions() {
-        self.submitButton.addTarget(
+        self.clearButton.addTarget(
             self,
-            action: #selector(SubmitRow.submitButtonTapped),
+            action: #selector(ResetRow.clearButtonTapped),
             for: UIControl.Event.touchUpInside
         )
     }
 }
 
 // MARK: - Target Action Methods
-extension SubmitRow {
-    @objc func submitButtonTapped() {
-        self.delegate?.submitTapped()
+extension ResetRow {
+    @objc func clearButtonTapped() {
+        self.delegate?.clearTapped()
     }
 }

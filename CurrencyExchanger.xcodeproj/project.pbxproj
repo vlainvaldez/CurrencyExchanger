@@ -21,6 +21,8 @@
 		7C44E51523AFAECA00B7A149 /* KeyboardManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C44E51423AFAECA00B7A149 /* KeyboardManagerDelegate.swift */; };
 		7C44E51723AFB77E00B7A149 /* MainViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C44E51623AFB77E00B7A149 /* MainViewDelegate.swift */; };
 		7C44E51A23B22B1600B7A149 /* ButtonWithImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C44E51923B22B1600B7A149 /* ButtonWithImage.swift */; };
+		7C44E51C23B232BA00B7A149 /* ResetRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C44E51B23B232BA00B7A149 /* ResetRow.swift */; };
+		7C44E51E23B2333700B7A149 /* ResetRowDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C44E51D23B2333700B7A149 /* ResetRowDelegate.swift */; };
 		7C7789F7239CF2D100B5E838 /* AbstractCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7789F6239CF2D100B5E838 /* AbstractCoordinator.swift */; };
 		7C7789FA239CF3D100B5E838 /* AnyTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7789F9239CF3D100B5E838 /* AnyTabCoordinator.swift */; };
 		7C7789FC239CF3FB00B5E838 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7789FB239CF3FB00B5E838 /* Coordinator.swift */; };
@@ -106,6 +108,8 @@
 		7C44E51423AFAECA00B7A149 /* KeyboardManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardManagerDelegate.swift; sourceTree = "<group>"; };
 		7C44E51623AFB77E00B7A149 /* MainViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewDelegate.swift; sourceTree = "<group>"; };
 		7C44E51923B22B1600B7A149 /* ButtonWithImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonWithImage.swift; sourceTree = "<group>"; };
+		7C44E51B23B232BA00B7A149 /* ResetRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetRow.swift; sourceTree = "<group>"; };
+		7C44E51D23B2333700B7A149 /* ResetRowDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetRowDelegate.swift; sourceTree = "<group>"; };
 		7C7789F6239CF2D100B5E838 /* AbstractCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractCoordinator.swift; sourceTree = "<group>"; };
 		7C7789F9239CF3D100B5E838 /* AnyTabCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyTabCoordinator.swift; sourceTree = "<group>"; };
 		7C7789FB239CF3FB00B5E838 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
@@ -373,6 +377,7 @@
 				7C83C0CE23A34F82002B667A /* SellRow.swift */,
 				7C83C0D023A34FC7002B667A /* BalancesRow.swift */,
 				7C83C0D223A34FF6002B667A /* SubmitRow.swift */,
+				7C44E51B23B232BA00B7A149 /* ResetRow.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -392,6 +397,7 @@
 				7C83C0DA23A3D1C7002B667A /* SellRowDelegate.swift */,
 				7C83C0ED23A73A81002B667A /* ReceiveRowDelegate.swift */,
 				7C86FC6923A76BFC00A726BE /* SubmitRowDelegate.swift */,
+				7C44E51D23B2333700B7A149 /* ResetRowDelegate.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -753,6 +759,7 @@
 				7C83C0DE23A3E8B9002B667A /* CurrencyRequest.swift in Sources */,
 				7C83C0EE23A73A81002B667A /* ReceiveRowDelegate.swift in Sources */,
 				7C86FC7523AA630600A726BE /* BalanceVC.swift in Sources */,
+				7C44E51C23B232BA00B7A149 /* ResetRow.swift in Sources */,
 				7C86FC7323AA62EF00A726BE /* BalanceView.swift in Sources */,
 				7C83C0F323A74A34002B667A /* ReceiveRowViewModel.swift in Sources */,
 				7C094FCA23994BF700B78FD7 /* AppDelegate.swift in Sources */,
@@ -778,6 +785,7 @@
 				7C83C0D123A34FC7002B667A /* BalancesRow.swift in Sources */,
 				7C83C0E823A49C66002B667A /* PickerType.swift in Sources */,
 				7C97AA0023ACF81E00CFC3CF /* Util.swift in Sources */,
+				7C44E51E23B2333700B7A149 /* ResetRowDelegate.swift in Sources */,
 				7C778A05239CF7D200B5E838 /* MainVC.swift in Sources */,
 				7C83C0CD23A34F55002B667A /* ReceiveRow.swift in Sources */,
 				7C86FC6A23A76BFC00A726BE /* SubmitRowDelegate.swift in Sources */,
