@@ -34,8 +34,8 @@ public class ReceiveRow: UICollectionViewCell {
         return view
     }()
     
-    public let currencyButton: UIButton = {
-        let view: UIButton = UIButton()
+    public let currencyButton: ButtonWithImage = {
+        let view: ButtonWithImage = ButtonWithImage()
         view.setTitle("EUR", for: UIControl.State.normal)
         view.setTitleColor(
             UIColor.white,
@@ -46,6 +46,12 @@ public class ReceiveRow: UICollectionViewCell {
             weight: UIFont.Weight.bold
         )
         view.accessibilityIdentifier = "saveButton_UIButton"
+        view.setImage(
+            #imageLiteral(resourceName: "expand-icon").withRenderingMode(UIImage.RenderingMode.alwaysTemplate),
+            for: UIControl.State.normal
+        )
+        view.contentMode = .center
+        view.tintColor = UIColor.white
         return view
     }()
     
@@ -55,6 +61,14 @@ public class ReceiveRow: UICollectionViewCell {
         view.text = "Receive"
         view.textAlignment = .center
         view.font = UIFont.systemFont(ofSize: 15.0, weight: UIFont.Weight.bold)
+        return view
+    }()
+    
+    private let downImageView: UIImageView = {
+        let view: UIImageView = UIImageView()
+        view.image = #imageLiteral(resourceName: "down-icon").withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        view.backgroundColor = UIColor.white
+        view.tintColor = AppUI.Color.springGreen
         return view
     }()
     
@@ -74,19 +88,25 @@ public class ReceiveRow: UICollectionViewCell {
         self.backgroundColor = UIColor.clear
         
         self.subviews(forAutoLayout: [
-            self.receiveLabel, self.amountTextField,
-            self.currencyButton
+            self.downImageView, self.receiveLabel,
+            self.amountTextField, self.currencyButton
         ])
         
-        self.receiveLabel.snp.remakeConstraints { (make: ConstraintMaker) -> Void in
+        self.downImageView.snp.remakeConstraints { (make: ConstraintMaker) -> Void in
+            make.width.height.equalTo(20.0)
             make.centerY.equalToSuperview()
             make.leading.equalToSuperview().offset(10.0)
-            make.width.equalTo(80.0)
+        }
+        
+        self.receiveLabel.snp.remakeConstraints { [unowned self] (make: ConstraintMaker) -> Void in
+            make.centerY.equalToSuperview()
+            make.leading.equalTo(self.downImageView.snp.trailing).offset(10.0)
+            make.width.equalTo(60.0)
         }
 
         self.amountTextField.snp.remakeConstraints { [unowned self] (make: ConstraintMaker) -> Void in
             make.top.equalToSuperview().offset(30.0)
-            make.leading.equalTo(self.receiveLabel.snp.trailing).offset(5.0)
+            make.width.equalTo(120.0)
             make.trailing.equalTo(self.currencyButton.snp.leading)
             make.bottom.equalToSuperview().inset(30.0)
         }
@@ -94,7 +114,7 @@ public class ReceiveRow: UICollectionViewCell {
         self.currencyButton.snp.remakeConstraints { (make: ConstraintMaker) -> Void in
             make.top.equalToSuperview().offset(30.0)
             make.width.equalTo(80.0)
-            make.trailing.equalToSuperview()
+            make.trailing.equalToSuperview().inset(10.0)
             make.bottom.equalToSuperview().inset(30.0)
         }
         
@@ -109,6 +129,7 @@ public class ReceiveRow: UICollectionViewCell {
         super.layoutSubviews()
         
         self.amountTextField.setRadius(radius: 10.0)
+        self.downImageView.setRadius()
     }
     
     public override func prepareForReuse() {

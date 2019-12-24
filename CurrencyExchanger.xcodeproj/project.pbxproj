@@ -20,6 +20,7 @@
 		7C44E51223AFAE9D00B7A149 /* KeyboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C44E51123AFAE9D00B7A149 /* KeyboardManager.swift */; };
 		7C44E51523AFAECA00B7A149 /* KeyboardManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C44E51423AFAECA00B7A149 /* KeyboardManagerDelegate.swift */; };
 		7C44E51723AFB77E00B7A149 /* MainViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C44E51623AFB77E00B7A149 /* MainViewDelegate.swift */; };
+		7C44E51A23B22B1600B7A149 /* ButtonWithImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C44E51923B22B1600B7A149 /* ButtonWithImage.swift */; };
 		7C7789F7239CF2D100B5E838 /* AbstractCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7789F6239CF2D100B5E838 /* AbstractCoordinator.swift */; };
 		7C7789FA239CF3D100B5E838 /* AnyTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7789F9239CF3D100B5E838 /* AnyTabCoordinator.swift */; };
 		7C7789FC239CF3FB00B5E838 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7789FB239CF3FB00B5E838 /* Coordinator.swift */; };
@@ -104,6 +105,7 @@
 		7C44E51123AFAE9D00B7A149 /* KeyboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardManager.swift; sourceTree = "<group>"; };
 		7C44E51423AFAECA00B7A149 /* KeyboardManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardManagerDelegate.swift; sourceTree = "<group>"; };
 		7C44E51623AFB77E00B7A149 /* MainViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewDelegate.swift; sourceTree = "<group>"; };
+		7C44E51923B22B1600B7A149 /* ButtonWithImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonWithImage.swift; sourceTree = "<group>"; };
 		7C7789F6239CF2D100B5E838 /* AbstractCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractCoordinator.swift; sourceTree = "<group>"; };
 		7C7789F9239CF3D100B5E838 /* AnyTabCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyTabCoordinator.swift; sourceTree = "<group>"; };
 		7C7789FB239CF3FB00B5E838 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
@@ -260,6 +262,14 @@
 			path = Protocols;
 			sourceTree = "<group>";
 		};
+		7C44E51823B22B0700B7A149 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7C44E51923B22B1600B7A149 /* ButtonWithImage.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		7C7789F4239CF24D00B5E838 /* Architecture */ = {
 			isa = PBXGroup;
 			children = (
@@ -327,6 +337,7 @@
 		7C83C0C423A3491F002B667A /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				7C44E51823B22B0700B7A149 /* Views */,
 				7C83C0EA23A73A18002B667A /* Classes */,
 				7C83C0C623A34A7E002B667A /* Enums */,
 				7C83C0C523A34A71002B667A /* Extensions */,
@@ -774,6 +785,7 @@
 				7C778A0E239CFE5000B5E838 /* AppMainCoordinator.swift in Sources */,
 				7C83C0CA23A34DFC002B667A /* AppUI.swift in Sources */,
 				7C44E50F23AD4B7C00B7A149 /* BalanceViewModel.swift in Sources */,
+				7C44E51A23B22B1600B7A149 /* ButtonWithImage.swift in Sources */,
 				7C97A9FA23AC7CB100CFC3CF /* BalanceData.swift in Sources */,
 				7C094FCC23994BF700B78FD7 /* SceneDelegate.swift in Sources */,
 				7C7789FA239CF3D100B5E838 /* AnyTabCoordinator.swift in Sources */,
