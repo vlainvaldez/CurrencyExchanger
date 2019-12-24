@@ -23,7 +23,7 @@ public class SellRow: UICollectionViewCell {
         view.autocapitalizationType = UITextAutocapitalizationType.none
         view.autocorrectionType = UITextAutocorrectionType.no
         view.backgroundColor = UIColor.white
-        view.keyboardType = .numberPad
+        view.keyboardType = .decimalPad
         return view
     }()
 
@@ -39,7 +39,7 @@ public class SellRow: UICollectionViewCell {
             weight: UIFont.Weight.bold
         )
         view.accessibilityIdentifier = "saveButton_UIButton"
-        view.isEnabled = false
+//        view.isEnabled = false
         return view
     }()
     
@@ -120,7 +120,7 @@ extension SellRow {
     public static var identifier: String = "SellRow"
     
     public func configure(with viewModel: SellRowViewModel) {
-        self.viewModel = viewModel        
+        self.viewModel = viewModel
         self.disposeBag = DisposeBag()
         self.amountTextField.rx.text.orEmpty
             .bind(to: viewModel.input.amount)

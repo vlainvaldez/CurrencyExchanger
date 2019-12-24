@@ -56,19 +56,23 @@ extension BalanceViewModel {
         
         let saveProcess = self.repository.getBalance(with: beforeCurrency)
         .flatMap { (balanceDatum: BalanceData) -> Single<[BalanceData]> in
-
-            let subtractedCommission: Double = balanceDatum.value - self.commission
-            let totalValue = subtractedCommission - initialAmountValue
             
             /*
-                balanceDatum.value is less than the value you're about
-                to convert, returns error on the subscription(onError)
-                if true
-             */
+               balanceDatum.value is less than the value you're about
+               to convert, returns error on the subscription(onError)
+               if true
+            */
+            
             if balanceDatum.value < initialAmountValue {
                 return .error(ConvertionError.insuficiencyError)
             }
             
+            if beforeCurrency.symbol == afterCurrency.symbol {
+                return .error(ConvertionError.sameCurrencyError)
+            }
+            
+            let totalValue: Double = balanceDatum.value - initialAmountValue
+
             let newBalance = BalanceData(
                 currency: balanceDatum.currency,
                 value: totalValue.roundTo(places: 2)
@@ -86,7 +90,7 @@ extension BalanceViewModel {
             
             let balanceData = BalanceData(
                 currency: afterCurrency.symbol,
-                value: newBalanceDataAmount
+                value: newBalanceDataAmount.roundTo(places: 2)
             )
             
             return self.repository.saveBalance(balances: [balanceData])
@@ -102,11 +106,24 @@ extension BalanceViewModel {
     /// - Returns: Double: Rounded value after convertion
     public func computeConvertion(
         receiveCurrency: Currency,
+        sellCurrency: Currency,
         amountToConvert amount: Double,
-        debug: Bool = false) -> Double {
+        debug: Bool = false) throws -> Double {
         
-        let computation = amount * Double(receiveCurrency.rate)
+        var computation = amount * Double(receiveCurrency.rate)
+        
+        if receiveCurrency.symbol == "EUR" {
+            computation = amount / Double(sellCurrency.rate)
+            self.commission = self.commission * sellCurrency.rate
+        }
+        
         let computationWithCommission = computation - self.commission
+        
+        if computationWithCommission < 0 {
+            throw ConvertionError.commissionError
+        }
+        
+        
         let finalValue = computationWithCommission.roundTo(places: 2)
 
         if debug {
@@ -115,7 +132,7 @@ extension BalanceViewModel {
             print("Rounded Value: \(finalValue)")
         }
 
-        return finalValue        
+        return finalValue
     }
     
 }
@@ -124,6 +141,8 @@ extension BalanceViewModel {
 // MARK: - Enumeration Declaration
 public enum ConvertionError: Error {
     case insuficiencyError
+    case sameCurrencyError
+    case commissionError
 }
 
 extension ConvertionError: LocalizedError {
@@ -131,6 +150,14 @@ extension ConvertionError: LocalizedError {
         switch self {
         case .insuficiencyError:
             return NSLocalizedString("Insuficient balance to do Convertion", comment: "Convertion Error")
+        case .sameCurrencyError:
+            return NSLocalizedString("You're Converting to the same currency", comment: "Convertion Error")
+        case .commissionError:
+            return NSLocalizedString("""
+                    You're converting low amount in which getting commission is not possible
+                """,
+                comment: "Convertion Error"
+            )
         }
     }
 }

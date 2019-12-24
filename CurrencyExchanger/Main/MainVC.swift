@@ -178,7 +178,20 @@ extension MainVC {
         self.rootView.receiveCurrencyPicker.delegate = self
     }
     
-    private func setPickerValues(currencies: [Currency] ) {        
+    private func setPickerValues(currencies: [Currency] ) {
+        
+        var currencies = currencies
+        let eurCurrency: Currency = Currency(symbol: "EUR", rate: 0.0)
+        currencies.append(eurCurrency)
+        
+        if let eurCurrencyIndex = currencies.firstIndex(where: { $0.symbol == "EUR" }) {
+            currencies = Util.rearrange(
+                array: currencies,
+                fromIndex: eurCurrencyIndex,
+                toIndex: 0
+            )
+        }
+        
         self.exchangeCurrencies = currencies
         self.rootView.sellCurrencyPicker.reloadAllComponents()
         self.rootView.receiveCurrencyPicker.reloadAllComponents()
@@ -356,17 +369,29 @@ extension MainVC: SubmitRowDelegate {
             let initialAmountValue: Double = Double(self.sellRowViewModel.output.amount.value)
         else { return }
         
-        let finalValue: Double = self.balanceViewModel.computeConvertion(
-            receiveCurrency: receiveCurrency,
-            amountToConvert: initialAmountValue
-        )
+        let sellCurrency = self.sellRowViewModel.output.currency
         
-        self.currencyConvertAlert(
-            convertedValue: finalValue,
-            initialAmountValue: initialAmountValue,
-            from: self.sellRowViewModel.output.currency,
-            to: receiveCurrency
-        )
+        if receiveCurrency.symbol == sellCurrency.symbol {
+            self.showErrorAlert(with: ConvertionError.sameCurrencyError)
+        }
+        
+        do {
+            let finalValue: Double = try self.balanceViewModel.computeConvertion(
+                receiveCurrency: receiveCurrency,
+                sellCurrency: sellCurrency,
+                amountToConvert: initialAmountValue
+            )
+            
+            self.currencyConvertAlert(
+                convertedValue: finalValue,
+                initialAmountValue: initialAmountValue,
+                from: self.sellRowViewModel.output.currency,
+                to: receiveCurrency
+            )
+        } catch let error {
+            self.showErrorAlert(with: error)
+        }
+
     }
 }
 
