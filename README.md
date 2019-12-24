@@ -32,6 +32,12 @@ A Storyboard full of vcs is really slow to load and use, thats why I use it with
 
 - Data Persistence(local storage)
 
+[RxSwift](https://github.com/ReactiveX/RxSwift)
+- Reactive Extension for Reactive Programming
+
+[PKHUD](https://github.com/pkluz/PKHUD)
+- A Swift based reimplementation of the Apple HUD (Volume, Ringer, Rotation,…) for iOS 8 and up.
+
 ### Sample
 ![alt text](https://github.com/vlainvaldez/CurrencyExchanger/blob/master/ScreenShot/screenshot.png)
 
