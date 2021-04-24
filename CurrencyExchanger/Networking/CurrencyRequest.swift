@@ -15,13 +15,13 @@ public enum CurrencyRequest {
 
 extension CurrencyRequest: TargetType {
     public var baseURL: URL {
-        return URL(string: "https://api.exchangeratesapi.io")!
+        return URL(string: "http://api.exchangeratesapi.io")!
     }
 
     public var path: String {
         switch self {
         case .getCurrencies:
-            return "/latest/"
+            return "/latest"
         }
     }
 
@@ -39,7 +39,7 @@ extension CurrencyRequest: TargetType {
     public var task: Task {
         switch self {
         case .getCurrencies:
-            return .requestPlain
+          return .requestParameters(parameters: ["access_key" : "API_KEY_HERE_REGISTER_ITS_FREE"], encoding: URLEncoding.default)
         }
     }
 
